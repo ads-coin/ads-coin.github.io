@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoinSphere - Earn & Invest</title>
+<style>
+:root {
+  --blue:#2459df;
+  --blue2:#3979ff;
+  --bg:#f4f6fb;
+  --white:#fff;
+  --text:#172033;
+  --muted:#8791a5;
+  --border:#e9edf4;
+  --green:#16a36a;
+  --red:#e24c61;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+}
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+.hidden{display:none!important}
+#auth{
+  min-height:100vh;display:flex;align-items:center;
+  justify-content:center;padding:20px;
+  background:linear-gradient(140deg,#e9efff,#f9fbff);
+}
+.auth-card{
+  background:white;width:100%;max-width:420px;
+  padding:35px;border-radius:22px;
+  box-shadow:0 20px 70px #1d3f8215;
+}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:21px}
+.logo-icon{
+  width:39px;height:39px;border-radius:12px;
+  display:grid;place-items:center;color:white;
+  background:var(--blue);font-size:22px;
+}
+.auth-card h1{margin:30px 0 8px;font-size:27px}
+.sub{color:var(--muted);font-size:13px;line-height:1.6}
+.field{margin-top:20px}
+.field label{display:block;font-size:13px;font-weight:650;margin-bottom:8px}
+.field input,.search{
+  width:100%;padding:13px 14px;border:1px solid var(--border);
+  border-radius:10px;outline:none;background:#fafbfe;
+}
+.field input:focus,.search:focus{border-color:var(--blue)}
+.primary{
+  background:var(--blue);color:white;padding:13px 17px;
+  border-radius:10px;font-weight:700;
+  transition:.2s;
+}
+.primary:hover{background:#1745bd;transform:translateY(-1px)}
+.full{width:100%;margin-top:23px}
+.switch{text-align:center;margin-top:20px;font-size:13px;color:var(--muted)}
+.switch span{color:var(--blue);font-weight:700;cursor:pointer}
+.demo{background:#f0f5ff;padding:12px;border-radius:10px;margin-top:20px;font-size:12px;color:#47639d;line-height:1.7}
+
+/* APP */
+#app{display:flex;min-height:100vh}
+.sidebar{
+  width:245px;background:white;border-right:1px solid var(--border);
+  position:fixed;left:0;top:0;bottom:0;padding:25px 17px;
+  z-index:5;display:flex;flex-direction:column;
+}
+.sidebar .logo{padding:0 8px 35px}
+.nav-label{font-size:10px;color:#a3aabc;font-weight:800;padding:12px}
+.nav-btn{
+  display:flex;align-items:center;gap:13px;
+  padding:13px 14px;width:100%;border-radius:10px;
+  color:#718096;background:transparent;text-align:left;
+  font-size:13px;font-weight:650;margin-bottom:5px;
+}
+.nav-btn:hover,.nav-btn.active{background:#edf2ff;color:var(--blue)}
+.nav-btn span{font-size:17px}
+.sidebar-bottom{margin-top:auto}
+.main{margin-left:245px;width:calc(100% - 245px);padding:25px 32px}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:15px;margin-bottom:27px;
+}
+.topbar h2{font-size:23px}
+.top-actions{display:flex;align-items:center;gap:12px}
+.avatar{
+  width:38px;height:38px;border-radius:50%;
+  background:#e6edff;color:var(--blue);
+  display:grid;place-items:center;font-weight:800;
+}
+.icon-btn{
+  background:white;border:1px solid var(--border);
+  padding:10px;border-radius:10px;
+}
+.page{display:none}
+.page.active{display:block}
+.welcome{margin-bottom:23px}
+.welcome h1{font-size:25px;margin-bottom:7px}
+.welcome p{color:var(--muted);font-size:13px}
+.balance-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:16px;margin-bottom:23px;
+}
+.card{
+  background:white;border:1px solid var(--border);
+  border-radius:15px;padding:20px;
+  box-shadow:0 4px 15px #172e5705;
+}
+.stat-top{display:flex;justify-content:space-between;align-items:center}
+.stat-icon{
+  width:38px;height:38px;background:#edf2ff;
+  color:var(--blue);border-radius:11px;
+  display:grid;place-items:center;font-size:19px;
+}
+.stat-title{font-size:12px;color:var(--muted)}
+.stat-value{font-size:24px;font-weight:800;margin-top:15px}
+.stat-foot{font-size:11px;color:var(--green);margin-top:7px}
+.grid-2{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}
+.card-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.card-heading h3{font-size:15px}
+.muted{font-size:12px;color:var(--muted)}
+.action-row{display:flex;gap:10px;margin-top:20px}
+.action-row button{flex:1}
+.secondary{
+  background:#edf2ff;color:var(--blue);padding:12px;
+  border-radius:9px;font-weight:700;font-size:12px;
+}
+.chart{width:100%;height:170px}
+.chart svg{width:100%;height:100%;overflow:visible}
+.chart-line{fill:none;stroke:var(--blue);stroke-width:3;stroke-linecap:round}
+.chart-area{fill:url(#chartGradient)}
+.reward-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:15px;
+}
+.reward-card{
+  background:white;border:1px solid var(--border);
+  border-radius:14px;padding:19px;
+}
+.reward-icon{
+  width:43px;height:43px;border-radius:12px;
+  display:grid;place-items:center;background:#edf2ff;
+  color:var(--blue);font-size:21px;margin-bottom:14px;
+}
+.reward-card h3{font-size:14px;margin-bottom:7px}
+.reward-card p{font-size:11px;color:var(--muted);line-height:1.5;min-height:33px}
+.reward-card button{width:100%;margin-top:15px}
+.tag{
+  display:inline-block;font-size:11px;font-weight:700;
+  color:var(--green);background:#e8f8f0;
+  padding:5px 9px;border-radius:20px;
+}
+.table-wrap{overflow-x:auto;background:white;border-radius:14px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th,td{text-align:left;padding:15px;font-size:12px;border-bottom:1px solid var(--border)}
+th{color:var(--muted);font-weight:650;background:#fafbfe}
+td{font-weight:600}
+.up{color:var(--green)}
+.down{color:var(--red)}
+.asset{display:flex;align-items:center;gap:10px}
+.asset-icon{
+  width:34px;height:34px;border-radius:50%;
+  background:#edf2ff;display:grid;place-items:center;color:var(--blue)
+}
+.small-btn{padding:8px 13px;border-radius:8px;background:#edf2ff;color:var(--blue);font-weight:700;font-size:11px}
+.market-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:20px}
+.market-card{background:white;border:1px solid var(--border);padding:18px;border-radius:14px}
+.market-card h3{font-size:13px}
+.market-price{font-size:22px;font-weight:800;margin:13px 0 7px}
+.admin-box{background:#fff8e9;border:1px solid #f4dfb2;padding:15px;border-radius:12px;margin-bottom:18px;color:#88621b;font-size:12px}
+.profile-box{display:flex;align-items:center;gap:15px;margin-bottom:20px}
+.profile-box .avatar{width:55px;height:55px}
+.modal-bg{
+  position:fixed;inset:0;background:#11182788;z-index:20;
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.modal-bg.show{display:flex}
+.modal{
+  background:white;width:100%;max-width:420px;
+  padding:25px;border-radius:17px;
+}
+.modal h2{font-size:19px;margin-bottom:10px}
+.modal p{font-size:12px;color:var(--muted);line-height:1.6}
+.modal .field{margin-top:15px}
+.close{float:right;background:#f1f3f8;padding:7px 10px;border-radius:7px}
+.empty{text-align:center;color:var(--muted);padding:25px;font-size:13px}
+.mobile-nav{display:none}
+@media(max-width:1050px){
+ .balance-grid{grid-template-columns:repeat(2,1fr)}
+ .reward-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:700px){
+ .sidebar{display:none}
+ .main{margin:0;width:100%;padding:19px 15px 90px}
+ .topbar h2{font-size:19px}
+ .welcome h1{font-size:21px}
+ .grid-2{grid-template-columns:1fr}
+ .market-grid{grid-template-columns:1fr}
+ .reward-grid{grid-template-columns:repeat(2,1fr)}
+ .card{padding:16px}
+ .stat-value{font-size:20px}
+ .mobile-nav{
+   position:fixed;bottom:0;left:0;right:0;background:white;
+   border-top:1px solid var(--border);display:flex;
+   justify-content:space-around;padding:11px 3px;z-index:10;
+ }
+ .mobile-nav button{background:none;color:#8390a5;font-size:10px}
+ .mobile-nav button span{display:block;font-size:20px;margin-bottom:4px}
+}
+@media(max-width:390px){
+ .balance-grid{gap:9px}
+ .reward-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- AUTHENTICATION -->
+<section id="auth">
+ <div class="auth-card">
+  <div class="logo"><div class="logo-icon">◉</div> CoinSphere</div>
+  <div id="loginForm">
+   <h1>Welcome back!</h1>
+   <p class="sub">Sign in to access your earning dashboard.</p>
+   <div class="field"><label>Email address</label><input id="loginEmail" type="email" placeholder="you@example.com"></div>
+   <div class="field"><label>Password</label><input id="loginPass" type="password" placeholder="Your password"></div>
+   <button class="primary full" onclick="login()">Sign In →</button>
+   <div class="switch">New to CoinSphere? <span onclick="showRegister()">Create account</span></div>
+  </div>
+  <div id="registerForm" class="hidden">
+   <h1>Create account</h1>
+   <p class="sub">Join CoinSphere and start earning demo coins.</p>
+   <div class="field"><label>Full name</label><input id="regName" placeholder="Your name"></div>
+   <div class="field"><label>Email</label><input id="regEmail" type="email" placeholder="you@example.com"></div>
+   <div class="field"><label>Password</label><input id="regPass" type="password" placeholder="At least 6 characters"></div>
+   <button class="primary full" onclick="register()">Create Account →</button>
+   <div class="switch">Already registered? <span onclick="showLogin()">Sign in</span></div>
+  </div>
+  <div class="demo">DEMO PROTOTYPE<br>All balances and transactions are simulated. No real money is deposited or paid out.</div>
+ </div>
+</section>
+
+<!-- APPLICATION -->
+<div id="app" class="hidden">
+ <aside class="sidebar">
+  <div class="logo"><div class="logo-icon">◉</div> CoinSphere</div>
+  <div class="nav-label">MAIN MENU</div>
+  <button class="nav-btn active" data-page="home" onclick="go('home')"><span>⌂</span> Overview</button>
+  <button class="nav-btn" data-page="earn" onclick="go('earn')"><span>✦</span> Earn Rewards</button>
+  <button class="nav-btn" data-page="invest" onclick="go('invest')"><span>◈</span> Investment Demo</button>
+  <button class="nav-btn" data-page="wallet" onclick="go('wallet')"><span>▣</span> My Wallet</button>
+  <button class="nav-btn" data-page="transfer" onclick="go('transfer')"><span>⇄</span> Transfers</button>
+  <div class="nav-label">ACCOUNT</div>
+  <button class="nav-btn" data-page="profile" onclick="go('profile')"><span>♙</span> Profile</button>
+  <button class="nav-btn admin-link hidden" data-page="admin" onclick="go('admin')"><span>⚙</span> Admin Panel</button>
+  <div class="sidebar-bottom">
+   <button class="nav-btn" onclick="logout()"><span>↪</span> Logout</button>
+  </div>
+ </aside>
+
+ <main class="main">
+  <header class="topbar">
+   <h2 id="pageTitle">Overview</h2>
+   <div class="top-actions">
+    <button class="icon-btn" onclick="notify('You are all caught up!')">♧</button>
+    <div class="avatar" id="topAvatar">U</div>
+    <b id="topName" style="font-size:12px"></b>
+   </div>
+  </header>
+
+  <!-- HOME -->
+  <section id="home" class="page active">
+   <div class="welcome">
+    <h1>Hello, <span id="welcomeName">User</span> 👋</h1>
+    <p>Welcome back! Here's what's happening with your account.</p>
+   </div>
+   <div class="balance-grid">
+    <div class="card">
+     <div class="stat-top"><span class="stat-title">Wallet Value</span><span class="stat-icon">₹</span></div>
+     <div class="stat-value" id="homeRupees">₹0.00</div><div class="stat-foot">Demo conversion value</div>
+    </div>
+    <div class="card">
+     <div class="stat-top"><span class="stat-title">Total Coins</span><span class="stat-icon">◉</span></div>
+     <div class="stat-value" id="homeCoins">0</div><div class="stat-foot">Algorithmic coins</div>
+    </div>
+    <div class="card">
+     <div class="stat-top"><span class="stat-title">Investment Value</span><span class="stat-icon">↗</span></div>
+     <div class="stat-value" id="homeInvest">₹0</div><div class="stat-foot">Simulated portfolio</div>
+    </div>
+    <div class="card">
+     <div class="stat-top"><span class="stat-title">Rewards Claimed</span><span class="stat-icon">♧</span></div>
+     <div class="stat-value" id="homeRewards">0</div><div class="stat-foot">Completed activities</div>
+    </div>
+   </div>
+   <div class="grid-2">
+    <div class="card">
+     <div class="card-heading"><h3>Portfolio Performance</h3><span class="tag">LIVE DEMO</span></div>
+     <div class="muted">Your simulated portfolio value</div>
+     <div class="stat-value" id="portfolioValue">₹0.00</div>
+     <div class="chart">
+      <svg viewBox="0 0 500 170" preserveAspectRatio="none">
+       <defs><linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#2459df" stop-opacity=".25"/><stop offset="100%" stop-color="#2459df" stop-opacity="0"/></linearGradient></defs>
+       <path id="areaPath" class="chart-area" d="M0 130 L500 130 L500 170 L0 170 Z"/>
+       <path id="linePath" class="chart-line" d="M0 130 L500 130"/>
+      </svg>
+     </div>
+     <div class="muted">Illustrative randomly fluctuating market data.</div>
+    </div>
+    <div class="card">
+     <div class="card-heading"><h3>Quick Actions</h3></div>
+     <p class="muted">Manage your demo wallet.</p>
+     <div class="action-row">
+      <button class="primary" onclick="go('earn')">Earn Coins</button>
+      <button class="secondary" onclick="go('wallet')">Wallet</button>
+     </div>
+     <div style="margin-top:27px">
+      <div class="card-heading"><h3>Exchange Rate</h3></div>
+      <div class="stat-value" style="font-size:21px">1,000 = ₹10</div>
+      <p class="muted">Fixed demo conversion rate</p>
+     </div>
+    </div>
+   </div>
+   <div class="card" style="margin-top:19px">
+    <div class="card-heading"><h3>Recent Transactions</h3><button class="small-btn" onclick="go('wallet')">View All</button></div>
+    <div id="recentHome"></div>
+   </div>
+  </section>
+
+  <!-- EARN -->
+  <section id="earn" class="page">
+   <div class="welcome"><h1>Earn Rewards ✦</h1><p>Complete activities to collect algorithmic coins.</p></div>
+   <div class="balance-grid" style="grid-template-columns:repeat(2,1fr)">
+    <div class="card"><div class="stat-title">Available Coins</div><div class="stat-value" id="earnCoins">0</div></div>
+    <div class="card"><div class="stat-title">Today's Claimed Rewards</div><div class="stat-value" id="earnCount">0</div></div>
+   </div>
+   <div class="reward-grid" id="rewardGrid"></div>
+  </section>
+
+  <!-- INVEST -->
+  <section id="invest" class="page">
+   <div class="welcome"><h1>Investment Simulator</h1><p>Explore digital asset price movements using virtual funds. No real trading.</p></div>
+   <div class="admin-box">⚠ This is an educational simulation. Prices are generated randomly and do not represent actual market data. Returns are not guaranteed.</div>
+   <div class="market-grid" id="marketGrid"></div>
+   <div class="card">
+    <div class="card-heading"><h3>Buy Virtual Assets</h3><span class="tag">DEMO ONLY</span></div>
+    <div class="field"><label>Select asset</label><select id="assetSelect" class="search"></select></div>
+    <div class="field"><label>Virtual investment amount (₹)</label><input id="investAmount" type="number" min="1" placeholder="Enter amount"></div>
+    <button class="primary full" onclick="buyAsset()">Buy Virtual Asset</button>
+   </div>
+   <div class="card" style="margin-top:18px">
+    <div class="card-heading"><h3>My Holdings</h3></div>
+    <div id="holdings"></div>
+   </div>
+  </section>
+
+  <!-- WALLET -->
+  <section id="wallet" class="page">
+   <div class="welcome"><h1>My Wallet</h1><p>Manage your simulated coin balance and transaction history.</p></div>
+   <div class="balance-grid" style="grid-template-columns:repeat(2,1fr)">
+    <div class="card"><div class="stat-title">Coin Balance</div><div class="stat-value" id="walletCoins">0</div></div>
+    <div class="card"><div class="stat-title">Equivalent Demo Value</div><div class="stat-value" id="walletValue">₹0</div></div>
+   </div>
+   <div class="card">
+    <div class="card-heading"><h3>Conversion Calculator</h3></div>
+    <div class="field"><label>Coins</label><input type="number" id="convertInput" value="1000" oninput="convert()"></div>
+    <div class="stat-value" id="convertResult">₹10.00</div>
+    <p class="muted">1,000 coins = ₹10 (illustrative accounting rate only, not redeemable cash).</p>
+   </div>
+   <div class="card" style="margin-top:18px">
+    <div class="card-heading"><h3>Transaction History</h3></div>
+    <div id="transactionTable"></div>
+   </div>
+  </section>
+
+  <!-- TRANSFER -->
+  <section id="transfer" class="page">
+   <div class="welcome"><h1>Peer-to-Peer Transfers</h1><p>Transfer demo coins to another registered account on this browser.</p></div>
+   <div class="card">
+    <div class="admin-box">Transfers are simulated locally. They do not send actual money or create a redeemable claim.</div>
+    <div class="field"><label>Recipient email</label><input id="recipientEmail" type="email" placeholder="friend@example.com"></div>
+    <div class="field"><label>Coins to send</label><input id="transferCoins" type="number" min="1" placeholder="Enter coins"></div>
+    <button class="primary full" onclick="transferCoins()">Send Demo Coins</button>
+   </div>
+  </section>
+
+  <!-- PROFILE -->
+  <section id="profile" class="page">
+   <div class="welcome"><h1>My Profile</h1><p>Account information and settings.</p></div>
+   <div class="card">
+    <div class="profile-box"><div class="avatar" id="profileAvatar">U</div><div><h3 id="profileName">User</h3><p class="muted" id="profileEmail"></p></div></div>
+    <div class="field"><label>Display name</label><input id="editName"></div>
+    <button class="primary full" onclick="saveProfile()">Save Profile</button>
+    <button class="secondary full" onclick="logout()">Log Out</button>
+   </div>
+  </section>
+
+  <!-- ADMIN -->
+  <section id="admin" class="page">
+   <div class="welcome"><h1>Admin Dashboard ⚙</h1><p>Local prototype administration and account overview.</p></div>
+   <div class="admin-box">Admin access is a local demo role, not production authorization. Never use this implementation to manage real customer funds.</div>
+   <div class="balance-grid">
+    <div class="card"><div class="stat-title">Registered Users</div><div class="stat-value" id="adminUsers">0</div></div>
+    <div class="card"><div class="stat-title">Total Demo Coins</div><div class="stat-value" id="adminCoins">0</div></div>
+    <div class="card"><div class="stat-title">Transactions</div><div class="stat-value" id="adminTx">0</div></div>
+    <div class="card"><div class="stat-title">Rewards Issued</div><div class="stat-value" id="adminRewards">0</div></div>
+   </div>
+   <div class="card">
+    <div class="card-heading"><h3>User Management</h3></div>
+    <div id="adminUserTable"></div>
+   </div>
+   <div class="card" style="margin-top:18px">
+    <div class="card-heading"><h3>Distribute Demo Coins</h3></div>
+    <div class="field"><label>Target email</label><input id="adminEmail" placeholder="user@example.com"></div>
+    <div class="field"><label>Amount</label><input id="adminAmount" type="number" min="1" placeholder="Coins"></div>
+    <button class="primary full" onclick="adminCredit()">Credit Demo Coins</button>
+   </div>
+  </section>
+ </main>
+</div>
+
+<nav class="mobile-nav hidden" id="mobileNav">
+ <button onclick="go('home')"><span>⌂</span>Home</button>
+ <button onclick="go('earn')"><span>✦</span>Earn</button>
+ <button onclick="go('invest')"><span>◈</span>Invest</button>
+ <button onclick="go('wallet')"><span>▣</span>Wallet</button>
+ <button onclick="go('profile')"><span>♙</span>Profile</button>
+</nav>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+ <div class="modal">
+  <button class="close" onclick="closeModal()">✕</button>
+  <h2 id="modalTitle">Information</h2>
+  <p id="modalText"></p>
+  <button class="primary full" onclick="closeModal()">Continue</button>
+ </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const KEY='coinsphere_demo_v1';
+const RATE=100;
+let users=JSON.parse(localStorage.getItem(KEY)||'{}');
+let current=null;
+let prices={BTC:6500000,ETH:220000,SOL:15000};
+let priceHistory=[];
+let assets=[
+ {symbol:'BTC',name:'Bitcoin',icon:'₿'},
+ {symbol:'ETH',name:'Ethereum',icon:'◆'},
+ {symbol:'SOL',name:'Solana',icon:'◎'}
+];
+let rewards=[
+ {id:'daily',name:'Daily Check-in',desc:'Claim your daily login reward.',icon:'☀',amount:1000},
+ {id:'ad',name:'Watch Advertisement',desc:'Complete a demo advertisement task.',icon:'▶',amount:500},
+ {id:'survey',name:'Complete Survey',desc:'Finish a sample feedback survey.',icon:'▤',amount:1500},
+ {id:'mission',name:'Daily Mission',desc:'Complete your daily platform mission.',icon:'◎',amount:2000},
+ {id:'referral',name:'Invite a Friend',desc:'Simulate a successful referral.',icon:'♧',amount:2500},
+ {id:'quiz',name:'Knowledge Quiz',desc:'Complete a sample crypto quiz.',icon:'✎',amount:750}
+];
+function save(){localStorage.setItem(KEY,JSON.stringify(users))}
+function notify(msg){
+ $('modalTitle').textContent='CoinSphere';
+ $('modalText').textContent=msg;
+ $('modalBg').classList.add('show');
+}
+function closeModal(){$('modalBg').classList.remove('show')}
+function showRegister(){$('loginForm').classList.add('hidden');$('registerForm').classList.remove('hidden')}
+function showLogin(){$('registerForm').classList.add('hidden');$('loginForm').classList.remove('hidden')}
+function register(){
+ let name=$('regName').value.trim(),email=$('regEmail').value.trim().toLowerCase(),pass=$('regPass').value;
+ if(!name||!email||pass.length<6)return notify('Enter a name, valid email and password of at least 6 characters.');
+ if(users[email])return notify('This email is already registered.');
+ users[email]={name,email,password:pass,coins:0,rewards:[],holdings:{},transactions:[],role:'user'};
+ save();start(email);
+}
+function login(){
+ let email=$('loginEmail').value.trim().toLowerCase(),pass=$('loginPass').value;
+ if(email==='admin@coinsphere.demo'&&pass==='admin123'){
+  if(!users[email])users[email]={name:'Administrator',email,password:pass,coins:1000000,rewards:[],holdings:{},transactions:[],role:'admin'};
+  save();start(email);return;
+ }
+ if(!users[email]||users[email].password!==pass)return notify('Incorrect email or password.');
+ start(email);
+}
+function start(email){
+ current=email;
+ $('auth').classList.add('hidden');$('app').classList.remove('hidden');
+ $('mobileNav').classList.remove('hidden');
+ render();go('home');
+}
+function logout(){current=null;$('app').classList.add('hidden');$('mobileNav').classList.add('hidden');$('auth').classList.remove('hidden');showLogin()}
+function user(){return users[current]}
+function money(n){return '₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2})}
+function record(type,amount,description){
+ user().transactions.unshift({type,amount,description,date:new Date().toLocaleString()});
+ save();
+}
+function go(page){
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+ $(page).classList.add('active');
+ document.querySelectorAll('.nav-btn').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
+ let titles={home:'Overview',earn:'Earn Rewards',invest:'Investment Simulator',wallet:'My Wallet',transfer:'Transfers',profile:'My Profile',admin:'Admin Dashboard'};
+ $('pageTitle').textContent=titles[page]||'Overview';
+ render();
+}
+function render(){
+ if(!current||!user())return;
+ let u=user(),rupees=u.coins/RATE;
+ $('welcomeName').textContent=u.name;
+ $('topName').textContent=u.name;
+ $('topAvatar').textContent=u.name[0].toUpperCase();
+ $('homeRupees').textContent=money(rupees);
+ $('homeCoins').textContent=u.coins.toLocaleString('en-IN');
+ $('homeInvest').textContent=money(portfolio());
+ $('homeRewards').textContent=u.rewards.length;
+ $('walletCoins').textContent=u.coins.toLocaleString('en-IN');
+ $('walletValue').textContent=money(rupees);
+ $('earnCoins').textContent=u.coins.toLocaleString('en-IN');
+ $('earnCount').textContent=u.rewards.length;
+ $('portfolioValue').textContent=money(portfolio());
+ $('profileName').textContent=u.name;
+ $('profileEmail').textContent=u.email;
+ $('profileAvatar').textContent=u.name[0].toUpperCase();
+ $('editName').value=u.name;
+ $('admin-link');
+ document.querySelectorAll('.admin-link').forEach(x=>x.classList.toggle('hidden',u.role!=='admin'));
+ renderRewards();renderTransactions();renderMarket();renderHoldings();
+ renderHomeTransactions();
+ if(u.role==='admin')renderAdmin();
+}
+function renderRewards(){
+ $('rewardGrid').innerHTML=rewards.map(r=>{
+ let done=user().rewards.includes(r.id);
+ return `<div class="reward-card">
+ <div class="reward-icon">${r.icon}</div>
+ <h3>${r.name}</h3><p>${r.desc}</p>
+ <div style="margin-top:12px;font-weight:800;color:#2459df">+${r.amount.toLocaleString()} coins</div>
+ <button class="${done?'secondary':'primary'} full" ${done?'disabled':''} onclick="claim('${r.id}')">${done?'✓ Claimed':'Claim Reward'}</button>
+ </div>`;
+ }).join('');
+}
+function claim(id){
+ let r=rewards.find(x=>x.id===id),u=user();
+ if(!r)return;
+ if(u.rewards.includes(id))return notify('You have already claimed this demo reward.');
+ u.coins+=r.amount;u.rewards.push(id);
+ record('Credit',r.amount,r.name);
+ render();notify(r.amount.toLocaleString()+' demo coins added to your wallet!');
+}
+function portfolio(){
+ let u=user(),total=0;
+ Object.entries(u.holdings||{}).forEach(([sym,qty])=>total+=qty*prices[sym]);
+ return total;
+}
+function renderMarket(){
+ $('marketGrid').innerHTML=assets.map(a=>{
+ let p=prices[a.symbol];
+ return `<div class="market-card">
+ <div class="asset"><div class="asset-icon">${a.icon}</div><div><h3>${a.name}</h3><span class="muted">${a.symbol}</span></div></div>
+ <div class="market-price">${money(p)}</div>
+ <span class="${p>=initialPrices[a.symbol]?'up':'down'}">● Simulated market</span>
+ </div>`;
+ }).join('');
+ $('assetSelect').innerHTML=assets.map(a=>`<option value="${a.symbol}">${a.name} (${a.symbol})</option>`).join('');
+}
+const initialPrices={BTC:6500000,ETH:220000,SOL:15000};
+function buyAsset(){
+ let symbol=$('assetSelect').value,amount=Number($('investAmount').value);
+ if(!amount||amount<=0||amount>100000000)return notify('Enter a valid virtual investment amount.');
+ if(amount>user().coins/RATE)return notify('Insufficient demo wallet value. Earn more coins first.');
+ let qty=amount/prices[symbol];
+ user().coins-=Math.round(amount*RATE);
+ user().holdings[symbol]=(user().holdings[symbol]||0)+qty;
+ record('Investment',Math.round(amount*RATE),'Bought virtual '+symbol);
+ save();render();notify('Virtual '+symbol+' asset purchased successfully.');
+}
+function renderHoldings(){
+ let h=user().holdings||{},rows=Object.entries(h).filter(x=>x[1]>0);
+ $('holdings').innerHTML=rows.length?`<div class="table-wrap"><table><tr><th>Asset</th><th>Quantity</th><th>Value</th><th>Action</th></tr>${rows.map(([s,q])=>`<tr><td>${s}</td><td>${q.toFixed(6)}</td><td>${money(q*prices[s])}</td><td><button class="small-btn" onclick="sellAsset('${s}')">Sell</button></td></tr>`).join('')}</table></div>`:'<div class="empty">No virtual holdings yet.</div>';
+}
+function sellAsset(symbol){
+ let u=user(),qty=u.holdings[symbol]||0;
+ if(!qty)return;
+ let value=qty*prices[symbol],coins=Math.round(value*RATE);
+ u.holdings[symbol]=0;u.coins+=coins;
+ record('Sale',coins,'Sold virtual '+symbol);
+ save();render();notify('Virtual asset sold. Demo coins returned to your wallet.');
+}
+function tick(){
+ Object.keys(prices).forEach(s=>{
+  let change=(Math.random()-.49)*.025;
+  prices[s]=Math.max(1,prices[s]*(1+change));
+ });
+ priceHistory.push(Math.random()*100);
+ if(priceHistory.length>25)priceHistory.shift();
+ let pts=priceHistory.map((v,i)=>[i*500/Math.max(1,priceHistory.length-1),145-v*1.1]);
+ if(pts.length>1){
+  let d=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+  $('linePath').setAttribute('d',d);
+  $('areaPath').setAttribute('d',d+' L500 170 L0 170 Z');
+ }
+ if(current){renderMarket();$('homeInvest').textContent=money(portfolio());$('portfolioValue').textContent=money(portfolio());renderHoldings()}
+}
+setInterval(tick,3000);
+function renderTransactions(){
+ let tx=user().transactions||[];
+ $('transactionTable').innerHTML=tx.length?`<div class="table-wrap"><table><tr><th>Type</th><th>Description</th><th>Amount</th><th>Date</th></tr>${tx.map(t=>`<tr><td>${t.type}</td><td>${t.description}</td><td class="${t.type==='Credit'||t.type==='Sale'?'up':'down'}">${t.type==='Credit'||t.type==='Sale'?'+':'−'}${Number(t.amount).toLocaleString('en-IN')}</td><td>${t.date}</td></tr>`).join('')}</table></div>`:'<div class="empty">No transactions yet.</div>';
+}
+function renderHomeTransactions(){
+ let tx=user().transactions.slice(0,4);
+ $('recentHome').innerHTML=tx.length?tx.map(t=>`<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #eee;font-size:12px"><b>${t.description}</b><span>${t.type==='Credit'||t.type==='Sale'?'+':'−'}${Number(t.amount).toLocaleString('en-IN')}</span></div>`).join(''):'<div class="empty">Your recent transactions will appear here.</div>';
+}
+function convert(){
+ let n=Number($('convertInput').value)||0;
+ $('convertResult').textContent=money(n/RATE);
+}
+function transferCoins(){
+ let email=$('recipientEmail').value.trim().toLowerCase(),n=Math.floor(Number($('transferCoins').value));
+ if(!users[email]||email===current)return notify('Enter another registered user email.');
+ if(!Number.isSafeInteger(n)||n<=0||n>user().coins)return notify('Invalid amount or insufficient coins.');
+ user().coins-=n;users[email].coins+=n;
+ record('Transfer',n,'Sent to '+email);
+ users[email].transactions.unshift({type:'Credit',amount:n,description:'Received from '+current,date:new Date().toLocaleString()});
+ save();render();notify('Demo coins transferred successfully.');
+}
+function saveProfile(){
+ let n=$('editName').value.trim();
+ if(!n)return notify('Enter a display name.');
+ user().name=n;save();render();notify('Profile updated.');
+}
+function adminCredit(){
+ if(user().role!=='admin')return notify('Access denied.');
+ let email=$('adminEmail').value.trim().toLowerCase(),n=Math.floor(Number($('adminAmount').value));
+ if(!users[email]||!Number.isSafeInteger(n)||n<=0)return notify('Enter an existing user and valid amount.');
+ users[email].coins+=n;
+ users[email].transactions.unshift({type:'Credit',amount:n,description:'Admin demo distribution',date:new Date().toLocaleString()});
+ save();render();notify('Demo coins distributed.');
+}
+function renderAdmin(){
+ let all=Object.values(users);
+ $('adminUsers').textContent=all.length;
+ $('adminCoins').textContent=all.reduce((a,u)=>a+u.coins,0).toLocaleString('en-IN');
+ $('adminTx').textContent=all.reduce((a,u)=>a+u.transactions.length,0);
+ $('adminRewards').textContent=all.reduce((a,u)=>a+u.rewards.length,0);
+ $('adminUserTable').innerHTML=`<div class="table-wrap"><table><tr><th>User</th><th>Email</th><th>Coins</th><th>Role</th></tr>${all.map(u=>`<tr><td>${escapeHtml(u.name)}</td><td>${escapeHtml(u.email)}</td><td>${u.coins.toLocaleString('en-IN')}</td><td>${u.role}</td></tr>`).join('')}</table></div>`;
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+</script>
+</body>
+</html>
