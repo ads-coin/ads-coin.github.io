@@ -2,1179 +2,1527 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#f7f9fc">
-<title>SpeedCheck - Website Speed Checker</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<title>Fast Coin - Financial Gaming Dashboard</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-:root {
-  --primary: #635bff;
-  --primary-light: #eeedff;
-  --green: #16b879;
-  --red: #ef5350;
-  --dark: #172033;
-  --muted: #8791a5;
-  --border: #e9edf4;
-  --bg: #f7f9fc;
-  --white: #ffffff;
-  --shadow: 0 8px 35px rgba(32,45,80,.055);
+:root{
+  --blue:#2563eb;
+  --blue2:#1746bd;
+  --light:#eff5ff;
+  --bg:#f5f7fb;
+  --white:#fff;
+  --dark:#17233b;
+  --muted:#8490a5;
+  --border:#e9edf4;
+  --green:#13a875;
+  --red:#e45454;
+  --shadow:0 5px 25px rgba(24,45,90,.055);
 }
-
-* {margin:0;padding:0;box-sizing:border-box}
-
-body {
-  font-family:Inter, sans-serif;
-  background:var(--bg);
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:Inter,Arial,sans-serif;
   color:var(--dark);
+  background:var(--bg);
   min-height:100vh;
 }
-
-button,input {font:inherit}
-button {cursor:pointer}
-
-.navbar {
-  height:75px;
-  background:#fff;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 7%;
-  position:sticky;
-  top:0;
-  z-index:10;
-}
-
-.logo {
-  display:flex;
-  align-items:center;
-  gap:11px;
-  font-size:21px;
-  font-weight:800;
-  letter-spacing:-1px;
-}
-
-.logo-icon {
-  width:37px;
-  height:37px;
-  background:var(--primary);
-  color:white;
-  display:grid;
-  place-items:center;
-  border-radius:11px;
-}
-
-.logo span {color:var(--primary)}
-
-.nav-right {
-  display:flex;
-  align-items:center;
-  gap:24px;
-  color:#69758a;
-  font-size:13px;
-}
-
-.nav-right a {text-decoration:none;color:inherit}
-.nav-right a:hover {color:var(--primary)}
-
-.status {
-  background:#e8faf2;
-  color:#139b69;
-  border-radius:30px;
-  padding:8px 13px;
-  font-weight:600;
-  display:flex;
-  align-items:center;
-  gap:7px;
-}
-
-.dot {
-  width:7px;height:7px;
-  border-radius:50%;
-  background:#16b879;
-}
-
-main {
-  max-width:1100px;
-  margin:auto;
-  padding:65px 22px 80px;
-}
-
-.hero {
-  text-align:center;
-  margin-bottom:38px;
-  animation:fadeUp .7s ease;
-}
-
-.tag {
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  padding:8px 13px;
-  border-radius:30px;
-  background:var(--primary-light);
-  color:var(--primary);
-  font-size:12px;
-  font-weight:700;
-  margin-bottom:22px;
-}
-
-.hero h1 {
-  font-size:clamp(34px,5vw,51px);
-  line-height:1.13;
-  letter-spacing:-2.5px;
-  margin-bottom:17px;
-}
-
-.hero h1 span {color:var(--primary)}
-
-.hero p {
-  color:var(--muted);
-  font-size:15px;
-  line-height:1.8;
-  max-width:590px;
-  margin:auto;
-}
-
-.checker {
-  background:white;
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:27px;
-  box-shadow:var(--shadow);
-  max-width:790px;
-  margin:auto;
-  animation:fadeUp .8s ease;
-}
-
-.input-label {
-  font-size:13px;
-  font-weight:700;
-  margin-bottom:12px;
-  display:block;
-}
-
-.input-box {
-  display:flex;
-  align-items:center;
-  border:1.5px solid #e4e8f0;
-  background:#fafbfe;
-  padding:7px;
-  border-radius:12px;
-  transition:.25s;
-}
-
-.input-box:focus-within {
-  border-color:var(--primary);
-  box-shadow:0 0 0 4px rgba(99,91,255,.09);
-}
-
-.input-box input {
-  flex:1;
-  min-width:0;
-  border:0;
-  outline:0;
-  background:transparent;
-  padding:13px 12px;
-  color:var(--dark);
-  font-size:14px;
-}
-
-.input-box button {
-  border:0;
-  border-radius:9px;
-  padding:14px 22px;
-  background:var(--primary);
-  color:white;
-  font-size:13px;
-  font-weight:700;
-  display:flex;
-  gap:9px;
-  align-items:center;
-  transition:.25s;
-}
-
-.input-box button:hover {
-  background:#5148eb;
-  transform:translateY(-2px);
-}
-
-.input-box button:disabled {opacity:.6;cursor:wait;transform:none}
-
-.hint {
-  color:#a0a8b7;
-  font-size:11px;
-  margin-top:12px;
-}
-
-.error {
-  display:none;
-  margin-top:12px;
-  color:var(--red);
-  font-size:12px;
-}
-
-.results {
-  display:none;
-  margin-top:35px;
-  animation:fadeUp .6s ease;
-}
-
-.section-heading {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
-
-.section-heading h2 {
-  font-size:19px;
-  letter-spacing:-.5px;
-}
-
-.section-heading span {
-  color:var(--muted);
-  font-size:11px;
-}
-
-.dashboard {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px;
-}
-
-.panel {
-  background:white;
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:24px;
-  box-shadow:var(--shadow);
-}
-
-.panel-title {
-  font-size:13px;
-  font-weight:700;
-}
-
-.panel-subtitle {
-  font-size:11px;
-  color:var(--muted);
-  margin-top:6px;
-}
-
-.gauge-wrap {
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:22px 0 10px;
-}
-
-.gauge {
-  width:190px;
-  height:190px;
-  position:relative;
-}
-
-.gauge svg {
-  width:100%;
-  height:100%;
-  transform:rotate(-90deg);
-}
-
-.gauge circle {
-  fill:none;
-  stroke-width:11;
-}
-
-.gauge .track {stroke:#edf0f6}
-
-.gauge .progress {
-  stroke:var(--primary);
-  stroke-linecap:round;
-  stroke-dasharray:440;
-  stroke-dashoffset:440;
-  transition:stroke-dashoffset 1.5s ease,stroke .5s;
-}
-
-.gauge-center {
-  position:absolute;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-}
-
-.score {
-  font-size:52px;
-  font-weight:800;
-  letter-spacing:-3px;
-}
-
-.score-label {
-  color:var(--muted);
-  font-size:11px;
-  margin-top:4px;
-}
-
-.grade {
-  text-align:center;
-  font-size:13px;
-  font-weight:700;
-  color:var(--green);
-  margin-top:7px;
-}
-
-.metrics {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-top:22px;
-}
-
-.metric {
-  padding:16px;
-  background:#f9faff;
-  border:1px solid #edf0f6;
-  border-radius:12px;
-  transition:.25s;
-}
-
-.metric:hover {
-  transform:translateY(-3px);
-  border-color:#d5d2ff;
-}
-
-.metric-icon {
-  width:31px;
-  height:31px;
-  background:var(--primary-light);
-  color:var(--primary);
-  border-radius:9px;
-  display:grid;
-  place-items:center;
-  margin-bottom:12px;
-}
-
-.metric-label {
-  font-size:11px;
-  color:var(--muted);
-  margin-bottom:7px;
-}
-
-.metric-value {
-  font-size:19px;
-  font-weight:800;
-  word-break:break-word;
-}
-
-.metric-note {
-  font-size:10px;
-  color:#9ca5b5;
-  margin-top:5px;
-}
-
-.recommendations {
-  margin-top:18px;
-}
-
-.recommendation {
-  display:flex;
-  gap:13px;
-  align-items:flex-start;
-  padding:15px 0;
-  border-bottom:1px solid var(--border);
-}
-
-.recommendation:last-child {border:0}
-
-.rec-icon {
-  width:33px;
-  height:33px;
-  border-radius:9px;
-  background:#e8faf2;
-  color:var(--green);
-  display:grid;
-  place-items:center;
-  flex-shrink:0;
-}
-
-.rec-text strong {
-  display:block;
-  font-size:12px;
-  margin-bottom:5px;
-}
-
-.rec-text p {
-  font-size:11px;
-  color:var(--muted);
-  line-height:1.6;
-}
-
-.info {
-  padding:15px;
-  margin-top:18px;
-  background:#f5f5ff;
-  border-radius:11px;
-  color:#6863ad;
-  font-size:11px;
-  line-height:1.7;
-}
-
-.history {
-  margin-top:35px;
-  background:white;
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:24px;
-  box-shadow:var(--shadow);
-}
-
-.history-head {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-
-.history-head h2 {font-size:17px}
-
-.clear-btn {
-  background:none;
-  border:0;
-  color:var(--primary);
-  font-size:11px;
-  font-weight:700;
-}
-
-.history-item {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  padding:14px 0;
-  border-bottom:1px solid var(--border);
-  font-size:12px;
-}
-
-.history-item:last-child {border:0}
-
-.history-url {
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  max-width:55%;
-  font-weight:600;
-}
-
-.history-score {
-  color:var(--green);
-  font-weight:800;
-}
-
-.empty {
-  text-align:center;
-  color:var(--muted);
-  font-size:12px;
-  padding:20px;
-}
-
-.features {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-  margin-top:65px;
-}
-
-.feature {
-  text-align:center;
-  padding:25px 15px;
-  background:white;
-  border:1px solid var(--border);
-  border-radius:15px;
-  transition:.3s;
-}
-
-.feature:hover {
-  transform:translateY(-5px);
-  box-shadow:var(--shadow);
-}
-
-.feature-icon {
-  width:44px;
-  height:44px;
-  display:grid;
-  place-items:center;
-  background:var(--primary-light);
-  color:var(--primary);
-  margin:0 auto 15px;
-  border-radius:12px;
-}
-
-.feature h3 {
-  font-size:13px;
-  margin-bottom:8px;
-}
-
-.feature p {
-  font-size:11px;
-  line-height:1.7;
-  color:var(--muted);
-}
-
-footer {
-  text-align:center;
-  padding:25px;
-  border-top:1px solid var(--border);
-  color:var(--muted);
-  font-size:11px;
-}
-
-.loader {
-  width:15px;
-  height:15px;
-  border:2px solid rgba(255,255,255,.4);
-  border-top-color:white;
-  border-radius:50%;
-  animation:spin .7s linear infinite;
-}
-
-@keyframes spin {to{transform:rotate(360deg)}}
-
-@keyframes fadeUp {
-  from {opacity:0;transform:translateY(18px)}
-  to {opacity:1;transform:translateY(0)}
-}
-
-@media(max-width:700px) {
-  .navbar {padding:0 18px}
-  .nav-right {gap:10px}
-  .nav-right a {display:none}
-  main {padding:45px 15px 55px}
-  .checker {padding:19px}
-  .input-box {flex-wrap:wrap}
-  .input-box input {width:100%;flex:auto}
-  .input-box button {width:100%;justify-content:center}
-  .dashboard {grid-template-columns:1fr}
-  .features {grid-template-columns:1fr}
-  .hero h1 {letter-spacing:-1.5px}
-  .panel {padding:20px}
-}
-
-@media(prefers-reduced-motion:reduce) {
-  *,*::before,*::after {
-    animation-duration:.01ms!important;
-    transition-duration:.01ms!important;
-    scroll-behavior:auto!important;
-  }
+button,input{font:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{
+  width:245px;background:white;border-right:1px solid var(--border);
+  padding:25px 17px;position:fixed;left:0;top:0;bottom:0;
+  z-index:20;display:flex;flex-direction:column;
+}
+.brand{display:flex;align-items:center;gap:11px;padding:0 10px 34px}
+.brand-logo{
+  width:42px;height:42px;background:var(--blue);
+  border-radius:13px;display:grid;place-items:center;
+}
+.brand-logo svg{width:30px;height:30px}
+.brand-name{font-weight:800;font-size:20px;letter-spacing:-1px}
+.brand-name span{color:var(--blue)}
+.nav-label{
+  font-size:10px;color:#a2aabb;font-weight:800;
+  letter-spacing:1.2px;padding:12px 12px;
+}
+.nav-btn{
+  border:0;background:transparent;width:100%;display:flex;
+  align-items:center;gap:13px;padding:13px 14px;
+  border-radius:10px;color:#718098;font-size:13px;
+  font-weight:600;text-align:left;margin-bottom:5px;transition:.2s;
+}
+.nav-btn svg{width:18px;height:18px}
+.nav-btn:hover,.nav-btn.active{background:#edf3ff;color:var(--blue)}
+.sidebar-bottom{margin-top:auto}
+.account-card{
+  background:#f5f8ff;border:1px solid var(--border);
+  border-radius:13px;padding:13px;display:flex;
+  align-items:center;gap:10px;
+}
+.avatar{
+  width:38px;height:38px;border-radius:50%;background:#dce8ff;
+  color:var(--blue);display:grid;place-items:center;
+  font-weight:800;flex-shrink:0;overflow:hidden;
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.account-name{font-size:12px;font-weight:700}
+.account-email{font-size:10px;color:var(--muted);margin-top:4px}
+.main{margin-left:245px;width:calc(100% - 245px);min-width:0}
+.topbar{
+  height:76px;background:white;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;position:sticky;top:0;z-index:10;
+}
+.page-title{font-size:19px;font-weight:800;letter-spacing:-.5px}
+.top-right{display:flex;align-items:center;gap:17px}
+.online{font-size:11px;color:var(--green);font-weight:700}
+.online:before{content:"";display:inline-block;width:7px;height:7px;
+background:var(--green);border-radius:50%;margin-right:7px}
+.top-avatar{width:37px;height:37px;border-radius:50%;background:#e4edff;
+display:grid;place-items:center;color:var(--blue);font-weight:800}
+.content{max-width:1500px;margin:auto;padding:29px 32px 60px}
+.view{display:none;animation:appear .35s ease}
+.view.active{display:block}
+@keyframes appear{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+.welcome{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
+.welcome h2{font-size:23px;letter-spacing:-.8px}
+.welcome p{font-size:12px;color:var(--muted);margin-top:8px}
+.date-pill{background:white;border:1px solid var(--border);border-radius:9px;
+padding:10px 13px;font-size:11px;color:#66748c}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:17px;margin-bottom:22px}
+.card{
+  background:white;border:1px solid var(--border);
+  border-radius:14px;padding:19px;box-shadow:var(--shadow);
+}
+.stat-card{position:relative;overflow:hidden;transition:.25s}
+.stat-card:hover{transform:translateY(-3px)}
+.stat-head{display:flex;justify-content:space-between;align-items:center}
+.stat-label{font-size:11px;color:var(--muted);font-weight:600}
+.stat-icon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center}
+.stat-icon svg{width:18px}
+.ic-blue{background:#edf3ff;color:#2563eb}
+.ic-green{background:#e9f9f1;color:#12a56f}
+.ic-orange{background:#fff3e5;color:#e89435}
+.ic-purple{background:#f1edff;color:#8861df}
+.stat-value{font-size:25px;font-weight:800;margin-top:15px;letter-spacing:-1px}
+.stat-change{font-size:10px;color:var(--green);margin-top:7px}
+.grid-main{display:grid;grid-template-columns:1.65fr 1fr;gap:18px}
+.card-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:19px}
+.card-heading h3{font-size:14px;font-weight:800}
+.card-heading small{color:var(--muted);font-size:10px}
+.chart-wrap{height:245px;position:relative}
+.chart-actions{display:flex;gap:5px}
+.chart-btn{
+  border:1px solid var(--border);background:white;color:var(--muted);
+  padding:6px 9px;border-radius:6px;font-size:10px;
+}
+.chart-btn.active{background:var(--light);color:var(--blue);border-color:#d8e5ff}
+.profile-hero{
+  background:linear-gradient(120deg,#1d4ed8,#3b82f6);
+  border-radius:15px;padding:25px;color:white;
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:22px;position:relative;overflow:hidden;
+}
+.profile-hero:after{
+  content:"";position:absolute;width:250px;height:250px;
+  border:35px solid rgba(255,255,255,.08);border-radius:50%;
+  right:-60px;top:-120px;
+}
+.profile-hero h2{font-size:22px}
+.profile-hero p{font-size:12px;color:#dce8ff;margin-top:8px}
+.profile-hero button{position:relative;z-index:1}
+.white-btn{background:white;color:var(--blue);border:0;
+padding:11px 16px;border-radius:9px;font-weight:700;font-size:11px}
+.leaderboard{margin-top:20px}
+.table{width:100%;border-collapse:collapse}
+.table th{text-align:left;color:#99a3b4;font-size:10px;
+font-weight:700;padding:12px 8px;border-bottom:1px solid var(--border)}
+.table td{padding:14px 8px;font-size:11px;border-bottom:1px solid #f0f2f6}
+.table tr:last-child td{border:0}
+.player{display:flex;align-items:center;gap:9px;font-weight:700}
+.rank{width:22px;height:22px;border-radius:7px;background:#f2f5fa;
+display:grid;place-items:center;font-weight:800;color:#68758c}
+.rank.gold{background:#fff4d8;color:#d69b24}
+.rank.silver{background:#edf0f6;color:#65738a}
+.rank.bronze{background:#ffede1;color:#b97642}
+.coin-text{color:#c18a18;font-weight:800}
+.green{color:var(--green);font-weight:700}
+.red{color:var(--red);font-weight:700}
+.action-btn{
+  border:0;background:var(--blue);color:white;
+  padding:10px 15px;border-radius:8px;font-size:11px;font-weight:700;
+  transition:.2s;
+}
+.action-btn:hover{background:var(--blue2);transform:translateY(-1px)}
+.action-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.outline-btn{background:white;border:1px solid var(--border);color:var(--dark)}
+.company-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.company{transition:.25s}
+.company:hover{transform:translateY(-3px)}
+.company-head{display:flex;align-items:center;justify-content:space-between}
+.company-logo{width:39px;height:39px;border-radius:11px;
+background:#edf3ff;color:var(--blue);display:grid;place-items:center;
+font-size:16px;font-weight:800}
+.company-name{font-size:13px;font-weight:800;margin-top:14px}
+.company-symbol{font-size:10px;color:var(--muted);margin-top:4px}
+.company-price{font-size:21px;font-weight:800;margin-top:17px}
+.company-change{font-size:10px;margin-top:5px}
+.company-chart{height:75px;margin-top:13px}
+.company-actions{display:flex;gap:8px;margin-top:12px}
+.company-actions button{flex:1;padding:9px 4px;font-size:10px}
+.market-top{display:flex;justify-content:space-between;align-items:center;
+margin-bottom:20px}
+.market-top p{font-size:12px;color:var(--muted);margin-top:6px}
+.free-banner{
+  padding:28px;border-radius:15px;color:white;
+  background:linear-gradient(115deg,#1646bd,#3985fa);
+  margin-bottom:22px;position:relative;overflow:hidden;
+}
+.free-banner:after{content:"₿";position:absolute;right:35px;top:-30px;
+font-size:170px;font-weight:800;color:rgba(255,255,255,.08)}
+.free-banner h2{font-size:24px;position:relative;z-index:1}
+.free-banner p{font-size:12px;color:#d9e6ff;margin-top:9px;position:relative;z-index:1}
+.reward-layout{display:grid;grid-template-columns:1.4fr .8fr;gap:18px}
+.reward-item{display:flex;align-items:center;gap:14px;padding:15px 0;
+border-bottom:1px solid var(--border)}
+.reward-item:last-child{border:0}
+.reward-icon{width:43px;height:43px;border-radius:12px;background:#fff4df;
+color:#d69a25;display:grid;place-items:center;font-size:19px}
+.reward-info{flex:1}
+.reward-info strong{font-size:12px}
+.reward-info p{font-size:10px;color:var(--muted);margin-top:5px}
+.reward-count{font-size:11px;color:var(--blue);font-weight:800}
+.cooldown{background:#f2f6ff;border-radius:12px;padding:20px;margin-top:15px}
+.cooldown h3{font-size:13px}
+.cooldown p{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6}
+.progress{height:7px;background:#e2e9f7;border-radius:10px;margin-top:14px;overflow:hidden}
+.progress span{height:100%;background:var(--blue);display:block;border-radius:10px;transition:.4s}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:11px;font-weight:700;margin-bottom:8px}
+.form-group input{width:100%;padding:12px;border:1px solid var(--border);
+border-radius:9px;outline:none;font-size:12px;background:#fafbfe}
+.form-group input:focus{border-color:var(--blue)}
+.profile-avatar{width:85px;height:85px;border-radius:50%;background:#e6efff;
+color:var(--blue);display:grid;place-items:center;font-size:30px;font-weight:800;
+margin-bottom:15px}
+.loan-box{background:#f5f8ff;padding:18px;border-radius:12px;margin-top:12px}
+.loan-box strong{font-size:23px;display:block;margin-top:9px}
+.loan-box small{font-size:10px;color:var(--muted)}
+.section-title{font-size:20px;font-weight:800;margin-bottom:7px}
+.section-desc{font-size:12px;color:var(--muted);margin-bottom:23px}
+.modal-bg{position:fixed;inset:0;background:rgba(15,27,50,.45);
+display:none;place-items:center;z-index:100;padding:15px}
+.modal-bg.show{display:grid}
+.modal{background:white;border-radius:17px;padding:25px;width:100%;
+max-width:400px;box-shadow:0 20px 70px #14264b30;animation:appear .2s}
+.modal h2{font-size:18px;margin-bottom:8px}
+.modal p{font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:18px}
+.modal-actions{display:flex;gap:9px;margin-top:17px}
+.modal-actions button{flex:1}
+.notice{font-size:11px;color:var(--muted);margin-top:12px;line-height:1.7}
+.toast{position:fixed;bottom:25px;right:25px;background:#17233b;
+color:white;padding:14px 20px;border-radius:10px;font-size:12px;
+opacity:0;transform:translateY(15px);transition:.3s;z-index:200;
+pointer-events:none;max-width:90vw}
+.toast.show{opacity:1;transform:translateY(0)}
+.mobile-menu{display:none;border:0;background:none;font-size:22px}
+.auth-screen{position:fixed;inset:0;z-index:300;background:#f5f7fb;
+display:none;align-items:center;justify-content:center;padding:20px}
+.auth-screen.show{display:flex}
+.auth-card{background:white;width:100%;max-width:400px;padding:30px;
+border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow)}
+.auth-card h2{font-size:24px;margin:20px 0 7px}
+.auth-card>p{font-size:12px;color:var(--muted);margin-bottom:22px}
+.auth-card .action-btn{width:100%;padding:13px}
+.auth-switch{font-size:11px;text-align:center;margin-top:18px;color:var(--muted)}
+.auth-switch a{color:var(--blue);font-weight:700;cursor:pointer}
+@media(max-width:1050px){
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .company-grid{grid-template-columns:repeat(2,1fr)}
+ .grid-main{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+ .sidebar{transform:translateX(-100%);transition:.3s}
+ .sidebar.open{transform:translateX(0)}
+ .main{margin-left:0;width:100%}
+ .topbar{height:65px;padding:0 17px}
+ .mobile-menu{display:block}
+ .content{padding:20px 14px 50px}
+ .stats{gap:9px}
+ .stat-card{padding:13px}
+ .stat-value{font-size:20px}
+ .welcome{align-items:flex-start}
+ .date-pill{display:none}
+ .company-grid{grid-template-columns:1fr 1fr;gap:9px}
+ .company{padding:13px}
+ .company-price{font-size:17px}
+ .reward-layout,.profile-grid{grid-template-columns:1fr}
+ .profile-hero{padding:20px;gap:12px}
+ .profile-hero h2{font-size:18px}
+ .table th,.table td{padding:12px 5px;font-size:10px}
+ .hide-mobile{display:none}
+ .card{padding:15px}
+ .toast{right:5%;bottom:15px}
 }
 </style>
 </head>
 
 <body>
 
-<header class="navbar">
-  <div class="logo">
-    <div class="logo-icon"><i data-lucide="gauge"></i></div>
-    Speed<span>Check</span>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-logo">
+      <svg viewBox="0 0 100 100" fill="none">
+        <path d="M8 69 A43 43 0 0 1 83 31 L72 42 A30 30 0 0 0 18 69Z" fill="white"/>
+        <path d="M78 33 L92 69 L78 69 L70 44Z" fill="white"/>
+        <path d="M43 66 L78 31 L55 72 Q49 83 40 76 Q34 70 43 66Z" fill="white"/>
+        <circle cx="44" cy="72" r="4" fill="#2563eb"/>
+      </svg>
+    </div>
+    <div class="brand-name">Fast <span>Coin</span></div>
   </div>
 
-  <div class="nav-right">
-    <a href="#checker">Speed Test</a>
-    <a href="#features">Features</a>
-    <a href="#history">History</a>
-    <div class="status"><div class="dot"></div> Ready to test</div>
+  <div class="nav-label">MAIN MENU</div>
+  <button class="nav-btn active" data-page="home"><span>⌂</span> Dashboard</button>
+  <button class="nav-btn" data-page="market"><span>↗</span> Market</button>
+  <button class="nav-btn" data-page="coins"><span>◉</span> Free Coins</button>
+  <button class="nav-btn" data-page="leaderboard"><span>♛</span> Leaderboard</button>
+
+  <div class="nav-label">ACCOUNT</div>
+  <button class="nav-btn" data-page="profile"><span>♙</span> My Profile</button>
+  <button class="nav-btn" data-page="loans"><span>▤</span> Virtual Loans</button>
+
+  <div class="sidebar-bottom">
+    <div class="account-card">
+      <div class="avatar" id="sideAvatar">FC</div>
+      <div style="min-width:0">
+        <div class="account-name" id="sideName">Fast Coin User</div>
+        <div class="account-email" id="sideEmail">Demo Account</div>
+      </div>
+    </div>
+    <button class="nav-btn" onclick="logout()" style="margin-top:15px">
+      <span>↪</span> Sign Out
+    </button>
+  </div>
+</aside>
+
+<div class="main">
+
+<header class="topbar">
+  <div style="display:flex;align-items:center;gap:13px">
+    <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
+    <div class="page-title" id="pageTitle">Dashboard</div>
+  </div>
+  <div class="top-right">
+    <span class="online">System Online</span>
+    <div class="top-avatar" id="topAvatar">FC</div>
   </div>
 </header>
 
-<main>
+<div class="content">
 
-<section class="hero">
-  <div class="tag">
-    <i data-lucide="zap" size="14"></i>
-    WEBSITE PERFORMANCE TOOL
+<!-- HOME -->
+<section class="view active" id="home">
+  <div class="welcome">
+    <div>
+      <h2>Hello, <span id="welcomeName">Trader</span> 👋</h2>
+      <p>Welcome back! Here's your Fast Coin overview.</p>
+    </div>
+    <div class="date-pill" id="todayDate"></div>
   </div>
 
-  <h1>Check Your Website <span>Speed</span></h1>
-
-  <p>
-    Discover how quickly your website responds.
-    Test its connection, measure response time and
-    get useful performance improvement suggestions.
-  </p>
-</section>
-
-<section class="checker" id="checker">
-  <label class="input-label" for="websiteUrl">
-    Enter Website URL
-  </label>
-
-  <div class="input-box">
-    <input
-      id="websiteUrl"
-      type="text"
-      placeholder="https://example.com"
-      autocomplete="url"
-    >
-
-    <button id="testBtn" onclick="startTest()">
-      <i data-lucide="zap" size="16"></i>
-      Check Speed
-    </button>
+  <div class="profile-hero">
+    <div>
+      <h2>Your financial playground</h2>
+      <p>Explore the virtual market, earn coins and improve your score.</p>
+    </div>
+    <button class="white-btn" onclick="showPage('market')">Explore Market →</button>
   </div>
 
-  <div class="hint">
-    <i data-lucide="shield-check" size="12" style="display:inline"></i>
-    Enter a valid public website URL to begin testing.
-  </div>
-
-  <div class="error" id="error"></div>
-</section>
-
-<section class="results" id="results">
-
-  <div class="section-heading">
-    <h2>Performance Results</h2>
-    <span id="testedUrl">Website analysis</span>
-  </div>
-
-  <div class="dashboard">
-
-    <div class="panel">
-      <div class="panel-title">Quick Check Score</div>
-      <div class="panel-subtitle">
-        Estimated score based on connection response time
+  <div class="stats">
+    <div class="card stat-card">
+      <div class="stat-head">
+        <span class="stat-label">Main Wallet</span>
+        <div class="stat-icon ic-blue">₹</div>
       </div>
-
-      <div class="gauge-wrap">
-        <div class="gauge">
-          <svg viewBox="0 0 160 160">
-            <circle class="track" cx="80" cy="80" r="70"
-              stroke-dasharray="330 440"
-              stroke-dashoffset="-55"/>
-            <circle class="progress" id="gaugeProgress"
-              cx="80" cy="80" r="70"
-              stroke-dasharray="330 440"
-              stroke-dashoffset="330"/>
-          </svg>
-
-          <div class="gauge-center">
-            <div class="score" id="score">--</div>
-            <div class="score-label">OUT OF 100</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grade" id="grade">Waiting for test</div>
-
-      <div class="info">
-        This is a quick connection score, not a Google Lighthouse score.
-        A full performance audit requires browser rendering and additional measurements.
-      </div>
+      <div class="stat-value" id="walletValue">₹0</div>
+      <div class="stat-change">Virtual wallet balance</div>
     </div>
 
-    <div class="panel">
-      <div class="panel-title">Performance Metrics</div>
-      <div class="panel-subtitle">
-        Measurements available to this browser
+    <div class="card stat-card">
+      <div class="stat-head">
+        <span class="stat-label">Total Coins</span>
+        <div class="stat-icon ic-orange">◉</div>
       </div>
-
-      <div class="metrics">
-
-        <div class="metric">
-          <div class="metric-icon"><i data-lucide="clock" size="16"></i></div>
-          <div class="metric-label">Response Time</div>
-          <div class="metric-value" id="responseTime">--</div>
-          <div class="metric-note">Connection attempt</div>
-        </div>
-
-        <div class="metric">
-          <div class="metric-icon"><i data-lucide="download" size="16"></i></div>
-          <div class="metric-label">Downloaded Data</div>
-          <div class="metric-value" id="pageSize">--</div>
-          <div class="metric-note">Only if browser permits</div>
-        </div>
-
-        <div class="metric">
-          <div class="metric-icon"><i data-lucide="server" size="16"></i></div>
-          <div class="metric-label">HTTP Status</div>
-          <div class="metric-value" id="httpStatus">--</div>
-          <div class="metric-note">Response availability</div>
-        </div>
-
-        <div class="metric">
-          <div class="metric-icon"><i data-lucide="activity" size="16"></i></div>
-          <div class="metric-label">Connection</div>
-          <div class="metric-value" id="connection">--</div>
-          <div class="metric-note">Reachability check</div>
-        </div>
-
-      </div>
+      <div class="stat-value" id="coinValue">0</div>
+      <div class="stat-change">Available virtual coins</div>
     </div>
 
+    <div class="card stat-card">
+      <div class="stat-head">
+        <span class="stat-label">Your Score</span>
+        <div class="stat-icon ic-purple">★</div>
+      </div>
+      <div class="stat-value" id="scoreValue">0</div>
+      <div class="stat-change">Performance points</div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-head">
+        <span class="stat-label">Followers</span>
+        <div class="stat-icon ic-green">♙</div>
+      </div>
+      <div class="stat-value" id="followersValue">0</div>
+      <div class="stat-change">Community followers</div>
+    </div>
   </div>
 
-  <div class="panel recommendations">
-    <div class="panel-title">Performance Recommendations</div>
-    <div class="panel-subtitle">
-      Suggestions based on your quick check
+  <div class="grid-main">
+    <div class="card">
+      <div class="card-heading">
+        <div>
+          <h3>Market Overview</h3>
+          <small>Virtual market activity</small>
+        </div>
+        <button class="chart-btn active">LIVE</button>
+      </div>
+      <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
     </div>
 
-    <div id="recommendations">
-      <div class="recommendation">
-        <div class="rec-icon"><i data-lucide="check" size="16"></i></div>
-        <div class="rec-text">
-          <strong>Ready to analyze</strong>
-          <p>Run a test to see recommendations.</p>
+    <div class="card">
+      <div class="card-heading">
+        <h3>Quick Actions</h3>
+        <small>Get started</small>
+      </div>
+      <div class="reward-item">
+        <div class="reward-icon">◉</div>
+        <div class="reward-info">
+          <strong>Earn Free Coins</strong>
+          <p>Claim your daily virtual rewards</p>
         </div>
+        <button class="action-btn" onclick="showPage('coins')">Open</button>
+      </div>
+      <div class="reward-item">
+        <div class="reward-icon" style="background:#eaf1ff;color:#2563eb">↗</div>
+        <div class="reward-info">
+          <strong>Explore Market</strong>
+          <p>Trade with virtual coins</p>
+        </div>
+        <button class="action-btn" onclick="showPage('market')">Open</button>
+      </div>
+      <div class="reward-item">
+        <div class="reward-icon" style="background:#f2edff;color:#8561d9">♛</div>
+        <div class="reward-info">
+          <strong>Leaderboard</strong>
+          <p>Compare community scores</p>
+        </div>
+        <button class="action-btn" onclick="showPage('leaderboard')">Open</button>
       </div>
     </div>
   </div>
 
+  <div class="card leaderboard">
+    <div class="card-heading">
+      <div>
+        <h3>Top Players</h3>
+        <small>Community leaderboard</small>
+      </div>
+      <button class="action-btn outline-btn" onclick="showPage('leaderboard')">View All →</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="table">
+        <thead><tr>
+          <th>RANK</th><th>PLAYER</th><th>BALANCE</th>
+          <th>SCORE</th><th>FOLLOWERS</th>
+        </tr></thead>
+        <tbody id="homeLeaderboard"></tbody>
+      </table>
+    </div>
+  </div>
 </section>
 
-<section class="history" id="history">
-  <div class="history-head">
-    <h2>Recent Tests</h2>
-    <button class="clear-btn" onclick="clearHistory()">Clear History</button>
+<!-- MARKET -->
+<section class="view" id="market">
+  <div class="market-top">
+    <div>
+      <h2 class="section-title">Virtual Market</h2>
+      <p class="section-desc" style="margin-bottom:0">Practice trading using virtual coins. No real money involved.</p>
+    </div>
+    <div class="date-pill">● Market Simulated</div>
   </div>
 
-  <div id="historyList">
-    <div class="empty">No tests performed yet.</div>
+  <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card stat-card">
+      <div class="stat-label">Available Wallet</div>
+      <div class="stat-value" id="marketWallet">₹0</div>
+    </div>
+    <div class="card stat-card">
+      <div class="stat-label">Total Trades</div>
+      <div class="stat-value" id="tradeCount">0</div>
+    </div>
+    <div class="card stat-card">
+      <div class="stat-label">Open Positions</div>
+      <div class="stat-value" id="positionCount">0</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-heading">
+      <div><h3>Companies</h3><small>Illustrative simulated prices</small></div>
+      <span style="font-size:10px;color:var(--green)">● Updating</span>
+    </div>
+    <div class="company-grid" id="companyGrid"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-heading"><h3>Your Open Positions</h3><small>Virtual positions</small></div>
+    <div style="overflow-x:auto">
+      <table class="table">
+        <thead><tr><th>COMPANY</th><th>TYPE</th><th>ENTRY</th><th>QUANTITY</th><th>CURRENT</th><th>VALUE</th><th>ACTION</th></tr></thead>
+        <tbody id="positionsTable"></tbody>
+      </table>
+    </div>
   </div>
 </section>
 
-<section class="features" id="features">
-
-  <div class="feature">
-    <div class="feature-icon"><i data-lucide="gauge"></i></div>
-    <h3>Speed Measurement</h3>
-    <p>Measure how quickly a website responds to a browser connection request.</p>
+<!-- FREE COINS -->
+<section class="view" id="coins">
+  <div class="free-banner">
+    <h2>Free Coins Center</h2>
+    <p>Complete reward activities to earn virtual coins and increase your score.</p>
+    <p style="margin-top:20px">Daily reward limit: <strong>10 claims</strong></p>
   </div>
 
-  <div class="feature">
-    <div class="feature-icon"><i data-lucide="bar-chart-3"></i></div>
-    <h3>Performance Insights</h3>
-    <p>View connection measurements and practical optimization suggestions.</p>
-  </div>
+  <div class="reward-layout">
+    <div class="card">
+      <div class="card-heading">
+        <div><h3>Daily Reward Activities</h3><small>Demo reward activities, not actual advertisements</small></div>
+        <span style="color:var(--blue);font-size:11px;font-weight:800" id="rewardCounter">0 / 10</span>
+      </div>
 
-  <div class="feature">
-    <div class="feature-icon"><i data-lucide="history"></i></div>
-    <h3>Test History</h3>
-    <p>Keep track of your recent website tests directly in your browser.</p>
-  </div>
+      <div id="rewardList"></div>
 
+      <div class="cooldown">
+        <h3>Reward Session Status</h3>
+        <p id="cooldownText">You can start your reward session.</p>
+        <div class="progress"><span id="rewardProgress" style="width:0%"></span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-heading"><h3>Reward Summary</h3></div>
+      <div class="stat-label">Coins Earned Today</div>
+      <div class="stat-value" id="earnedToday">0</div>
+      <div class="stat-change">Virtual coins</div>
+      <div style="height:1px;background:var(--border);margin:20px 0"></div>
+      <div class="stat-label">Remaining Claims</div>
+      <div class="stat-value" id="remainingClaims">10</div>
+      <div class="stat-change">Daily reward allowance</div>
+      <div class="notice">
+        The demo simulates reward completion. For production ad monetization, integrate an approved rewarded-ad network and validate reward callbacks on a trusted backend.
+      </div>
+    </div>
+  </div>
 </section>
 
-</main>
+<!-- LEADERBOARD -->
+<section class="view" id="leaderboard">
+  <h2 class="section-title">Leaderboard</h2>
+  <p class="section-desc">See how you compare with other Fast Coin members.</p>
+  <div class="card">
+    <div class="card-heading">
+      <h3>Top Community Members</h3>
+      <span style="font-size:10px;color:var(--green)">Live data when connected</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="table">
+        <thead><tr><th>RANK</th><th>PLAYER</th><th>BALANCE</th><th>SCORE</th><th>FOLLOWERS</th><th>STATUS</th></tr></thead>
+        <tbody id="fullLeaderboard"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
 
-<footer>
-  © 2026 SpeedCheck. Simple website performance testing.
-</footer>
+<!-- PROFILE -->
+<section class="view" id="profile">
+  <h2 class="section-title">My Profile</h2>
+  <p class="section-desc">Manage your account and community details.</p>
 
-<script>
-lucide.createIcons();
+  <div class="profile-grid">
+    <div class="card">
+      <div class="profile-avatar" id="profileAvatar">FC</div>
+      <h3 id="profileDisplayName" style="font-size:17px">Fast Coin User</h3>
+      <p id="profileEmail" style="font-size:11px;color:var(--muted);margin-top:7px">Demo Account</p>
+      <div style="margin-top:25px">
+        <div class="stat-label">Member Status</div>
+        <div style="font-size:13px;font-weight:700;margin-top:7px;color:var(--green)">● Active Member</div>
+      </div>
+      <div style="margin-top:20px">
+        <div class="stat-label">User ID</div>
+        <div id="profileUID" style="font-size:10px;margin-top:7px;word-break:break-all">Demo</div>
+      </div>
+    </div>
 
-const input = document.getElementById("websiteUrl");
-const button = document.getElementById("testBtn");
-const errorBox = document.getElementById("error");
+    <div class="card">
+      <div class="card-heading"><h3>Edit Profile</h3></div>
+      <div class="form-group">
+        <label>Display Name</label>
+        <input id="editName" maxlength="30" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label>Username</label>
+        <input id="editUsername" maxlength="20" placeholder="Username">
+      </div>
+      <div class="form-group">
+        <label>Bio</label>
+        <input id="editBio" maxlength="120" placeholder="Tell us about yourself">
+      </div>
+      <button class="action-btn" onclick="saveProfile()">Save Changes</button>
+    </div>
+  </div>
 
-let historyData = [];
+  <div class="card" style="margin-top:18px">
+    <h3 style="font-size:14px;margin-bottom:18px">Account Statistics</h3>
+    <div class="stats" style="margin:0">
+      <div><div class="stat-label">Wallet</div><div class="stat-value" id="profileWallet">₹0</div></div>
+      <div><div class="stat-label">Coins</div><div class="stat-value" id="profileCoins">0</div></div>
+      <div><div class="stat-label">Score</div><div class="stat-value" id="profileScore">0</div></div>
+      <div><div class="stat-label">Followers</div><div class="stat-value" id="profileFollowers">0</div></div>
+    </div>
+  </div>
+</section>
 
-try {
-  historyData = JSON.parse(
-    localStorage.getItem("speedcheck-history") || "[]"
-  );
-  if (!Array.isArray(historyData)) historyData = [];
-} catch {
-  historyData = [];
+<!-- VIRTUAL LOANS -->
+<section class="view" id="loans">
+  <h2 class="section-title">Virtual Loans</h2>
+  <p class="section-desc">Practice managing virtual credit and repayments. No actual lending or financial obligations.</p>
+
+  <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card"><div class="stat-label">Virtual Credit</div><div class="stat-value" id="loanTotal">₹0</div></div>
+    <div class="card"><div class="stat-label">Repaid</div><div class="stat-value" id="loanRepaid">₹0</div></div>
+    <div class="card"><div class="stat-label">Outstanding</div><div class="stat-value" id="loanOutstanding">₹0</div></div>
+  </div>
+
+  <div class="profile-grid">
+    <div class="card">
+      <h3 style="font-size:14px;margin-bottom:10px">Virtual Credit Simulator</h3>
+      <p class="notice" style="margin:0 0 17px">Practice with a simulated credit facility. This is not a real loan.</p>
+      <div class="form-group">
+        <label>Credit Amount</label>
+        <input id="loanAmount" type="number" min="100" max="5000" value="500">
+      </div>
+      <button class="action-btn" onclick="takeLoan()">Add Virtual Credit</button>
+    </div>
+    <div class="card">
+      <h3 style="font-size:14px;margin-bottom:10px">Virtual Repayment</h3>
+      <p class="notice" style="margin:0 0 17px">Repay your outstanding virtual credit from your virtual wallet.</p>
+      <div class="form-group">
+        <label>Repayment Amount</label>
+        <input id="repayAmount" type="number" min="1" value="100">
+      </div>
+      <button class="action-btn" onclick="repayLoan()">Repay Credit</button>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3 style="font-size:14px;margin-bottom:10px">Credit Information</h3>
+    <p class="notice" style="margin:0">Virtual credit is added to a separate practice ledger. It does not create real debt, charge interest, or automatically deduct money from your wallet.</p>
+  </div>
+</section>
+
+</div>
+</div>
+</div>
+
+<!-- AUTH -->
+<div class="auth-screen" id="authScreen">
+  <div class="auth-card">
+    <div class="brand" style="padding:0">
+      <div class="brand-logo">
+        <svg viewBox="0 0 100 100" fill="none">
+          <path d="M8 69 A43 43 0 0 1 83 31 L72 42 A30 30 0 0 0 18 69Z" fill="white"/>
+          <path d="M78 33 L92 69 L78 69 L70 44Z" fill="white"/>
+          <path d="M43 66 L78 31 L55 72 Q49 83 40 76 Q34 70 43 66Z" fill="white"/>
+          <circle cx="44" cy="72" r="4" fill="#2563eb"/>
+        </svg>
+      </div>
+      <div class="brand-name">Fast <span>Coin</span></div>
+    </div>
+
+    <h2 id="authTitle">Welcome Back!</h2>
+    <p id="authDescription">Sign in to your Fast Coin account.</p>
+
+    <div class="form-group" id="authNameGroup" style="display:none">
+      <label>Your Name</label>
+      <input id="authName" placeholder="Enter your name">
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input id="authEmail" type="email" placeholder="you@example.com">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input id="authPassword" type="password" placeholder="Enter password">
+    </div>
+    <button class="action-btn" id="authSubmit" onclick="submitAuth()">Sign In</button>
+    <div class="auth-switch">
+      <span id="authSwitchText">Don't have an account?</span>
+      <a onclick="toggleAuthMode()" id="authSwitchLink">Create account</a>
+    </div>
+    <div class="notice" id="authNotice">Demo mode is available without Firebase. Connect Firebase to enable secure cloud accounts.</div>
+  </div>
+</div>
+
+<!-- TRADE MODAL -->
+<div class="modal-bg" id="tradeModal">
+  <div class="modal">
+    <h2 id="tradeTitle">Virtual Trade</h2>
+    <p id="tradeDescription">Select your virtual trade amount.</p>
+    <div class="form-group">
+      <label>Amount (Virtual ₹)</label>
+      <input type="number" id="tradeAmount" min="1" value="100">
+    </div>
+    <div class="notice" id="tradeInfo"></div>
+    <div class="modal-actions">
+      <button class="action-btn outline-btn" onclick="closeModal()">Cancel</button>
+      <button class="action-btn" onclick="confirmTrade()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+// ======================================================
+// FIREBASE CONFIGURATION
+// Replace these values with your Firebase project config.
+// ======================================================
+
+import { initializeApp } from
+"https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+
+import {
+  getAuth,onAuthStateChanged,createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,signOut,updateProfile
+} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+import {
+  getFirestore,doc,getDoc,setDoc,updateDoc,
+  collection,onSnapshot,serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.firebasestorage.app",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+let auth=null,db=null,firebaseReady=false;
+let currentUser=null;
+let authMode="login";
+let demoMode=true;
+let userData=null;
+let leaderboardUsers=[];
+let activeCompany=null;
+let tradeDirection="up";
+let mainChart=null;
+let companyCharts={};
+let marketInterval=null;
+let unsubLeaderboard=null;
+
+const $=id=>document.getElementById(id);
+
+const defaults={
+  name:"Fast Coin User",
+  username:"fastuser",
+  bio:"Exploring the virtual market.",
+  wallet:10000,
+  coins:250,
+  score:100,
+  followers:0,
+  loanTotal:0,
+  loanRepaid:0,
+  trades:0,
+  positions:[],
+  rewards:{date:"",count:0,earned:0,lastSession:0},
+  createdAt:Date.now()
+};
+
+const companies=[
+  {id:"MSFT",name:"Microsoft",symbol:"MSFT",price:415,logo:"M",color:"#2563eb"},
+  {id:"GOOGL",name:"Google",symbol:"GOOGL",price:175,logo:"G",color:"#4285f4"},
+  {id:"AAPL",name:"Apple",symbol:"AAPL",price:230,logo:"A",color:"#64748b"},
+  {id:"AMZN",name:"Amazon",symbol:"AMZN",price:195,logo:"a",color:"#e99432"},
+  {id:"NVDA",name:"NVIDIA",symbol:"NVDA",price:145,logo:"N",color:"#16a34a"},
+  {id:"META",name:"Meta",symbol:"META",price:590,logo:"∞",color:"#2878df"}
+];
+
+function money(value){
+  return "₹"+Number(value||0).toLocaleString("en-IN",{
+    maximumFractionDigits:2
+  });
 }
 
-renderHistory();
-
-input.addEventListener("keydown", e => {
-  if (e.key === "Enter") startTest();
-});
-
-function normalizeUrl(value) {
-  let url = value.trim();
-
-  if (!url) throw new Error("Please enter a website URL.");
-
-  if (!/^https?:\/\//i.test(url)) {
-    url = "https://" + url;
-  }
-
-  let parsed;
-
-  try {
-    parsed = new URL(url);
-  } catch {
-    throw new Error("Please enter a valid website URL.");
-  }
-
-  if (!["http:", "https:"].includes(parsed.protocol)) {
-    throw new Error("Only HTTP and HTTPS websites are supported.");
-  }
-
-  if (!parsed.hostname.includes(".")) {
-    throw new Error("Please enter a complete domain name.");
-  }
-
-  return parsed.href;
+function number(value){
+  return Number(value||0).toLocaleString("en-IN");
 }
 
-async function startTest() {
-  errorBox.style.display = "none";
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
 
-  let url;
+function today(){
+  return new Date().toISOString().slice(0,10);
+}
 
-  try {
-    url = normalizeUrl(input.value);
-  } catch (error) {
-    showError(error.message);
+function showToast(message){
+  const toast=$("toast");
+  toast.textContent=message;
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"),2600);
+}
+
+function saveLocal(){
+  if(demoMode){
+    try{
+      localStorage.setItem("fastcoin-demo",JSON.stringify(userData));
+    }catch(e){}
+  }
+}
+
+function loadLocal(){
+  try{
+    return {...defaults,...JSON.parse(
+      localStorage.getItem("fastcoin-demo")||"{}"
+    )};
+  }catch(e){
+    return {...defaults};
+  }
+}
+
+async function persist(){
+  saveLocal();
+
+  if(firebaseReady && currentUser){
+    await setDoc(
+      doc(db,"users",currentUser.uid),
+      {
+        ...userData,
+        email:currentUser.email,
+        updatedAt:serverTimestamp()
+      },
+      {merge:true}
+    );
+  }
+}
+
+async function initializeFirebase(){
+  if(!firebaseConfig.apiKey ||
+     firebaseConfig.apiKey==="YOUR_API_KEY") return;
+
+  try{
+    const app=initializeApp(firebaseConfig);
+    auth=getAuth(app);
+    db=getFirestore(app);
+    firebaseReady=true;
+
+    onAuthStateChanged(auth,async user=>{
+      if(user){
+        currentUser=user;
+        demoMode=false;
+        await loadCloudProfile(user);
+        $("authScreen").classList.remove("show");
+        await startLeaderboard();
+        initializeAppUI();
+      }else{
+        currentUser=null;
+        showAuth();
+      }
+    });
+  }catch(error){
+    console.error(error);
+    showToast("Firebase setup error. Demo mode is available.");
+  }
+}
+
+async function loadCloudProfile(user){
+  const ref=doc(db,"users",user.uid);
+  const snap=await getDoc(ref);
+
+  if(snap.exists()){
+    userData={...defaults,...snap.data()};
+  }else{
+    userData={
+      ...defaults,
+      name:user.displayName||user.email.split("@")[0],
+      email:user.email
+    };
+    await persist();
+  }
+}
+
+window.showAuth=function(){
+  $("authScreen").classList.add("show");
+};
+
+window.toggleAuthMode=function(){
+  authMode=authMode==="login"?"register":"login";
+  $("authTitle").textContent=authMode==="login"?"Welcome Back!":"Create Account";
+  $("authDescription").textContent=authMode==="login"?
+    "Sign in to your Fast Coin account.":"Join the Fast Coin community.";
+  $("authSubmit").textContent=authMode==="login"?"Sign In":"Create Account";
+  $("authNameGroup").style.display=authMode==="register"?"block":"none";
+  $("authSwitchText").textContent=authMode==="login"?
+    "Don't have an account?":"Already have an account?";
+  $("authSwitchLink").textContent=authMode==="login"?
+    "Create account":"Sign in";
+};
+
+window.submitAuth=async function(){
+  const email=$("authEmail").value.trim();
+  const password=$("authPassword").value;
+
+  if(!email || password.length<6){
+    showToast("Enter an email and a password of at least 6 characters.");
     return;
   }
 
-  button.disabled = true;
-  button.innerHTML = '<div class="loader"></div> Testing...';
+  if(!firebaseReady){
+    demoMode=true;
+    userData=loadLocal();
+    userData.name=$("authName").value.trim()||
+      email.split("@")[0];
+    userData.email=email;
+    $("authScreen").classList.remove("show");
+    initializeAppUI();
+    showToast("Welcome to Fast Coin demo!");
+    return;
+  }
 
-  document.getElementById("results").style.display = "block";
-  document.getElementById("testedUrl").textContent =
-    new URL(url).hostname;
-
-  document.getElementById("score").textContent = "...";
-  document.getElementById("grade").textContent =
-    "Testing connection...";
-  document.getElementById("responseTime").textContent = "--";
-  document.getElementById("pageSize").textContent = "--";
-  document.getElementById("httpStatus").textContent = "--";
-  document.getElementById("connection").textContent = "Testing";
-
-  document.getElementById("gaugeProgress").style.strokeDashoffset = 330;
-
-  document.getElementById("recommendations").innerHTML =
-    '<div class="recommendation"><div class="rec-icon"><div class="loader" style="border-color:#c9c6ff;border-top-color:#635bff"></div></div><div class="rec-text"><strong>Analyzing website</strong><p>Waiting for the browser connection test...</p></div></div>';
-
-  const result = await measureWebsite(url);
-
-  displayResults(result);
-  saveHistory(result);
-
-  button.disabled = false;
-  button.innerHTML = '<i data-lucide="zap" size="16"></i> Check Again';
-  lucide.createIcons();
-}
-
-async function measureWebsite(url) {
-  const start = performance.now();
-
-  let result = {
-    url,
-    time: 0,
-    status: "Not exposed",
-    size: "Unavailable",
-    connection: "Unknown",
-    cors: false,
-    success: false
-  };
-
-  // First attempt: normal CORS request.
-  // Some websites allow cross-origin requests.
-
-  try {
-    const controller = new AbortController();
-
-    const timeout = setTimeout(
-      () => controller.abort(),
-      15000
-    );
-
-    try {
-      const response = await fetch(url, {
-        method: "GET",
-        mode: "cors",
-        cache: "no-store",
-        redirect: "follow",
-        signal: controller.signal
-      });
-
-      result.time = performance.now() - start;
-      result.status = response.status;
-      result.connection = response.ok ? "Online" : "Responding";
-      result.success = true;
-      result.cors = true;
-
-      const length = response.headers.get("content-length");
-
-      if (length) {
-        result.size = formatBytes(Number(length));
-      } else {
-        result.size = "Not provided";
-      }
-
-      response.body?.cancel().catch(() => {});
-    } finally {
-      clearTimeout(timeout);
-    }
-
-  } catch (error) {
-
-    // Second attempt: opaque no-cors request.
-    // It can confirm reachability but hides HTTP details.
-
-    const fallbackStart = performance.now();
-
-    try {
-      const controller = new AbortController();
-
-      const timeout = setTimeout(
-        () => controller.abort(),
-        15000
+  try{
+    if(authMode==="register"){
+      const credential=await createUserWithEmailAndPassword(
+        auth,email,password
       );
-
-      try {
-        const response = await fetch(url, {
-          method: "GET",
-          mode: "no-cors",
-          cache: "no-store",
-          signal: controller.signal
-        });
-
-        result.time = performance.now() - fallbackStart;
-        result.status = "Hidden by browser";
-        result.connection = "Reachable";
-        result.success = true;
-        result.size = "Hidden by browser";
-
-        response.body?.cancel().catch(() => {});
-      } finally {
-        clearTimeout(timeout);
-      }
-
-    } catch (fallbackError) {
-      result.time = performance.now() - fallbackStart;
-      result.connection =
-        fallbackError.name === "AbortError"
-          ? "Timed out"
-          : "Unavailable";
-
-      result.status = "Unavailable";
-      result.success = false;
+      const name=$("authName").value.trim()||email.split("@")[0];
+      await updateProfile(credential.user,{displayName:name});
+    }else{
+      await signInWithEmailAndPassword(auth,email,password);
     }
+  }catch(error){
+    showToast(error.message);
   }
+};
 
-  return result;
-}
+window.logout=async function(){
+  if(firebaseReady && currentUser){
+    await signOut(auth);
+  }else{
+    currentUser=null;
+    userData=null;
+    showAuth();
+  }
+};
 
-function formatBytes(bytes) {
-  if (!Number.isFinite(bytes) || bytes < 0) return "Unavailable";
-  if (bytes === 0) return "0 B";
+function initializeAppUI(){
+  if(!userData)userData=loadLocal();
 
-  const units = ["B", "KB", "MB", "GB"];
-  const index = Math.min(
-    Math.floor(Math.log(bytes) / Math.log(1024)),
-    units.length - 1
+  $("authScreen").classList.remove("show");
+  updateDashboard();
+  createMarket();
+  createRewards();
+  updateProfileView();
+  updateLoans();
+  updateLeaderboard();
+  startMarket();
+  createMainChart();
+
+  $("todayDate").textContent=new Date().toLocaleDateString(
+    "en-IN",{day:"numeric",month:"short",year:"numeric"}
   );
-
-  return (bytes / Math.pow(1024, index)).toFixed(2)
-    + " " + units[index];
 }
 
-function calculateScore(ms) {
-  if (ms <= 100) return 100;
-  if (ms <= 200) return 95;
-  if (ms <= 400) return 85;
-  if (ms <= 600) return 75;
-  if (ms <= 900) return 65;
-  if (ms <= 1200) return 55;
-  if (ms <= 2000) return 40;
-  if (ms <= 3500) return 25;
-  return 10;
+function updateDashboard(){
+  const name=userData.name||"User";
+  const initials=name.slice(0,2).toUpperCase();
+
+  $("welcomeName").textContent=name;
+  $("sideName").textContent=name;
+  $("sideEmail").textContent=userData.email||"Demo Account";
+  $("sideAvatar").textContent=initials;
+  $("topAvatar").textContent=initials;
+  $("walletValue").textContent=money(userData.wallet);
+  $("coinValue").textContent=number(userData.coins);
+  $("scoreValue").textContent=number(userData.score);
+  $("followersValue").textContent=number(userData.followers);
+  $("marketWallet").textContent=money(userData.wallet);
+  $("tradeCount").textContent=number(userData.trades);
+  $("positionCount").textContent=userData.positions.length;
+
+  updateProfileView();
+  updateLoans();
+  updatePositions();
 }
 
-function displayResults(result) {
-  const score = result.success
-    ? calculateScore(result.time)
-    : 0;
+window.showPage=function(page){
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  $(page).classList.add("active");
 
-  document.getElementById("responseTime").textContent =
-    result.success
-      ? Math.round(result.time) + " ms"
-      : "--";
-
-  document.getElementById("pageSize").textContent = result.size;
-  document.getElementById("httpStatus").textContent =
-    result.status;
-
-  document.getElementById("connection").textContent =
-    result.connection;
-
-  document.getElementById("score").textContent = score;
-
-  const gauge = document.getElementById("gaugeProgress");
-  const grade = document.getElementById("grade");
-
-  gauge.style.stroke = !result.success
-    ? "#ef5350"
-    : score >= 75
-      ? "#16b879"
-      : score >= 45
-        ? "#f3a735"
-        : "#ef5350";
-
-  gauge.style.strokeDashoffset =
-    330 - (330 * score / 100);
-
-  if (!result.success) {
-    grade.textContent = "Connection could not be confirmed";
-    grade.style.color = "#ef5350";
-  } else if (score >= 75) {
-    grade.textContent = "Fast response";
-    grade.style.color = "#16b879";
-  } else if (score >= 45) {
-    grade.textContent = "Average response";
-    grade.style.color = "#e49a23";
-  } else {
-    grade.textContent = "Slow response";
-    grade.style.color = "#ef5350";
-  }
-
-  showRecommendations(result);
-}
-
-function showRecommendations(result) {
-  const container = document.getElementById("recommendations");
-
-  let items = [];
-
-  if (!result.success) {
-    items.push([
-      "alert-circle",
-      "Connection could not be confirmed",
-      "Check the URL, DNS settings, website availability and browser network access."
-    ]);
-  } else if (result.time <= 400) {
-    items.push([
-      "check-circle",
-      "Good connection response",
-      "The browser received a response quickly during this test."
-    ]);
-  } else {
-    items.push([
-      "zap",
-      "Improve server response",
-      "Check server performance, hosting resources, caching and backend processing."
-    ]);
-  }
-
-  items.push([
-    "image",
-    "Optimize images",
-    "Use modern WebP or AVIF formats and compress large images."
-  ]);
-
-  items.push([
-    "code",
-    "Optimize website code",
-    "Minify CSS and JavaScript and remove unnecessary scripts."
-  ]);
-
-  items.push([
-    "database",
-    "Enable caching",
-    "Configure browser caching, CDN delivery and server-side caching."
-  ]);
-
-  container.innerHTML = items.map(item => `
-    <div class="recommendation">
-      <div class="rec-icon">
-        <i data-lucide="${item[0]}" size="16"></i>
-      </div>
-      <div class="rec-text">
-        <strong>${escapeHTML(item[1])}</strong>
-        <p>${escapeHTML(item[2])}</p>
-      </div>
-    </div>
-  `).join("");
-
-  lucide.createIcons();
-}
-
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[char]);
-}
-
-function showError(message) {
-  errorBox.textContent = message;
-  errorBox.style.display = "block";
-}
-
-function saveHistory(result) {
-  historyData.unshift({
-    url: result.url,
-    time: result.time,
-    success: result.success,
-    date: new Date().toLocaleString()
+  document.querySelectorAll(".nav-btn[data-page]").forEach(btn=>{
+    btn.classList.toggle("active",btn.dataset.page===page);
   });
 
-  historyData = historyData.slice(0, 10);
+  const titles={
+    home:"Dashboard",market:"Virtual Market",coins:"Free Coins",
+    leaderboard:"Leaderboard",profile:"My Profile",loans:"Virtual Loans"
+  };
+  $("pageTitle").textContent=titles[page]||"Dashboard";
+  $("sidebar").classList.remove("open");
 
-  try {
-    localStorage.setItem(
-      "speedcheck-history",
-      JSON.stringify(historyData)
-    );
-  } catch {}
+  if(page==="leaderboard")updateLeaderboard();
+  if(page==="market")updatePositions();
+};
 
-  renderHistory();
-}
+document.querySelectorAll(".nav-btn[data-page]").forEach(btn=>{
+  btn.addEventListener("click",()=>showPage(btn.dataset.page));
+});
 
-function renderHistory() {
-  const list = document.getElementById("historyList");
+window.toggleSidebar=function(){
+  $("sidebar").classList.toggle("open");
+};
 
-  if (!historyData.length) {
-    list.innerHTML =
-      '<div class="empty">No tests performed yet.</div>';
-    return;
-  }
+// ======================== MARKET ========================
 
-  list.innerHTML = historyData.map(item => `
-    <div class="history-item">
-      <div class="history-url" title="${escapeHTML(item.url)}">
-        ${escapeHTML(item.url)}
+function createMarket(){
+  const grid=$("companyGrid");
+
+  grid.innerHTML=companies.map(company=>`
+    <div class="card company">
+      <div class="company-head">
+        <div class="company-logo" style="background:${company.color}15;color:${company.color}">
+          ${company.logo}
+        </div>
+        <span style="font-size:9px;color:#16a875">● LIVE SIM</span>
       </div>
-      <div>${item.success ? Math.round(item.time) + " ms" : "Failed"}</div>
-      <div class="history-score">
-        ${item.success ? calculateScore(item.time) + "/100" : "--"}
+      <div class="company-name">${company.name}</div>
+      <div class="company-symbol">${company.symbol}</div>
+      <div class="company-price" id="price-${company.id}">
+        ${money(company.price)}
       </div>
-      <div style="color:#a0a8b7;font-size:10px">
-        ${escapeHTML(item.date)}
+      <div class="company-change" id="change-${company.id}">+0.00%</div>
+      <div class="company-chart"><canvas id="chart-${company.id}"></canvas></div>
+      <div class="company-actions">
+        <button class="action-btn" onclick="openTrade('${company.id}','up')">Buy ↑</button>
+        <button class="action-btn" style="background:#eaf8f1;color:#13966a" onclick="openTrade('${company.id}','down')">Sell ↓</button>
       </div>
     </div>
   `).join("");
+
+  companies.forEach(company=>{
+    company.history=Array.from({length:20},()=>company.price);
+    const canvas=$("chart-"+company.id);
+    companyCharts[company.id]=new Chart(canvas,{
+      type:"line",
+      data:{
+        labels:company.history.map((_,i)=>i),
+        datasets:[{
+          data:company.history,
+          borderColor:"#2563eb",
+          backgroundColor:"rgba(37,99,235,.07)",
+          fill:true,tension:.4,pointRadius:0,borderWidth:2
+        }]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{enabled:false}},
+        scales:{x:{display:false},y:{display:false}}
+      }
+    });
+  });
 }
 
-function clearHistory() {
-  historyData = [];
+function startMarket(){
+  if(marketInterval)clearInterval(marketInterval);
 
-  try {
-    localStorage.removeItem("speedcheck-history");
-  } catch {}
+  marketInterval=setInterval(()=>{
+    companies.forEach(company=>{
+      const old=company.price;
+      company.price=Math.max(1,company.price*(1+(Math.random()-.49)*.012));
+      company.history.push(company.price);
+      company.history.shift();
 
-  renderHistory();
+      const change=(company.price-old)/old*100;
+      const price=$("price-"+company.id);
+      const changeEl=$("change-"+company.id);
+
+      if(price)price.textContent=money(company.price);
+      if(changeEl){
+        changeEl.textContent=(change>=0?"+":"")+change.toFixed(3)+"%";
+        changeEl.style.color=change>=0?"#16a875":"#e45454";
+      }
+
+      if(companyCharts[company.id]){
+        companyCharts[company.id].data.datasets[0].data=company.history;
+        companyCharts[company.id].update("none");
+      }
+    });
+
+    updatePositions();
+    if(mainChart)updateMainChart();
+  },1800);
 }
+
+window.openTrade=function(id,direction){
+  activeCompany=companies.find(c=>c.id===id);
+  tradeDirection=direction;
+  if(!activeCompany)return;
+
+  $("tradeTitle").textContent=(direction==="up"?"Buy ":"Sell ")+activeCompany.name;
+  $("tradeDescription").textContent=
+    "Open a simulated "+(direction==="up"?"upward":"downward")+
+    " position using virtual currency.";
+  $("tradeInfo").textContent=
+    "Current simulated price: "+money(activeCompany.price)+
+    ". This is a practice trade, not an actual security transaction.";
+  $("tradeAmount").value=100;
+  $("tradeModal").classList.add("show");
+};
+
+window.closeModal=function(){
+  $("tradeModal").classList.remove("show");
+};
+
+window.confirmTrade=async function(){
+  const amount=Number($("tradeAmount").value);
+
+  if(!Number.isFinite(amount)||amount<=0){
+    showToast("Enter a valid amount.");
+    return;
+  }
+
+  const quantity=amount/activeCompany.price;
+
+  if(amount>userData.wallet){
+    showToast("Insufficient virtual wallet balance.");
+    return;
+  }
+
+  userData.wallet-=amount;
+  userData.trades++;
+  userData.score+=5;
+
+  userData.positions.push({
+    id:Date.now()+Math.random(),
+    company:activeCompany.id,
+    direction:tradeDirection,
+    entry:activeCompany.price,
+    quantity,
+    amount
+  });
+
+  await persist();
+  updateDashboard();
+  updateLeaderboard();
+  closeModal();
+  showToast("Virtual position opened successfully!");
+};
+
+function updatePositions(){
+  if(!$("positionsTable"))return;
+
+  const positions=userData?.positions||[];
+
+  if(!positions.length){
+    $("positionsTable").innerHTML=
+      '<tr><td colspan="7" style="text-align:center;color:#8490a5;padding:25px">No open positions yet.</td></tr>';
+    return;
+  }
+
+  $("positionsTable").innerHTML=positions.map(p=>{
+    const c=companies.find(x=>x.id===p.company);
+    const value=p.quantity*c.price;
+    return `<tr>
+      <td><b>${c.name}</b></td>
+      <td>${p.direction==="up"?"Buy":"Sell"}</td>
+      <td>${money(p.entry)}</td>
+      <td>${p.quantity.toFixed(3)}</td>
+      <td>${money(c.price)}</td>
+      <td>${money(value)}</td>
+      <td><button class="action-btn" onclick="closePosition('${p.id}')">Close</button></td>
+    </tr>`;
+  }).join("");
+}
+
+window.closePosition=async function(id){
+  const index=userData.positions.findIndex(p=>String(p.id)===String(id));
+  if(index<0)return;
+
+  const p=userData.positions[index];
+  const c=companies.find(x=>x.id===p.company);
+  const currentValue=p.quantity*c.price;
+  const profit=p.direction==="up"
+    ?currentValue-p.amount
+    :p.amount-currentValue;
+
+  userData.wallet+=p.amount+profit;
+  userData.score+=profit>=0?10:0;
+  userData.positions.splice(index,1);
+
+  await persist();
+  updateDashboard();
+  updateLeaderboard();
+  showToast("Position closed. Virtual result: "+money(profit));
+};
+
+// ======================== REWARDS ========================
+
+function getRewards(){
+  if(userData.rewards.date!==today()){
+    userData.rewards={
+      date:today(),count:0,earned:0,lastSession:0
+    };
+  }
+  return userData.rewards;
+}
+
+function createRewards(){
+  const rewards=getRewards();
+
+  $("rewardList").innerHTML=Array.from({length:10},(_,i)=>`
+    <div class="reward-item">
+      <div class="reward-icon">◉</div>
+      <div class="reward-info">
+        <strong>Reward Activity ${i+1}</strong>
+        <p>Complete a simulated reward activity</p>
+      </div>
+      <span class="reward-count" id="reward-status-${i}">
+        ${i<rewards.count?"Claimed":" +50 coins"}
+      </span>
+      <button class="action-btn" id="reward-btn-${i}"
+        ${i<rewards.count?"disabled":""}
+        onclick="claimReward(${i})">
+        ${i<rewards.count?"Done":"Claim"}
+      </button>
+    </div>
+  `).join("");
+
+  updateRewardView();
+}
+
+function updateRewardView(){
+  const r=getRewards();
+  $("rewardCounter").textContent=r.count+" / 10";
+  $("earnedToday").textContent=number(r.earned);
+  $("remainingClaims").textContent=10-r.count;
+  $("rewardProgress").style.width=(r.count*10)+"%";
+
+  const remaining=12*60*60*1000-(Date.now()-r.lastSession);
+
+  $("cooldownText").textContent=
+    r.count>=10?"Daily reward limit reached. Come back tomorrow.":
+    r.lastSession&&remaining>0?
+    "Next reward session available in "+formatTime(remaining):
+    "Your reward session is ready. Claim up to 10 activities today.";
+}
+
+function formatTime(ms){
+  const hours=Math.floor(ms/3600000);
+  const minutes=Math.floor(ms%3600000/60000);
+  const seconds=Math.floor(ms%60000/1000);
+  return `${hours}h ${minutes}m ${seconds}s`;
+}
+
+window.claimReward=async function(index){
+  const r=getRewards();
+
+  if(r.count>=10){
+    showToast("You have reached today's reward limit.");
+    return;
+  }
+
+  const remaining=12*60*60*1000-(Date.now()-r.lastSession);
+  if(r.lastSession&&remaining>0){
+    showToast("Cooldown: "+formatTime(remaining));
+    return;
+  }
+
+  if(index!==r.count){
+    showToast("Complete reward activities in order.");
+    return;
+  }
+
+  // Demo-only reward completion.
+  // Replace with a verified rewarded-ad provider callback.
+  userData.coins+=50;
+  userData.score+=5;
+  r.count++;
+  r.earned+=50;
+  r.lastSession=Date.now();
+
+  await persist();
+
+  $("reward-btn-"+index).disabled=true;
+  $("reward-btn-"+index).textContent="Done";
+  $("reward-status-"+index).textContent="Claimed";
+
+  updateDashboard();
+  updateRewardView();
+  updateLeaderboard();
+
+  showToast("+50 virtual coins added!");
+};
+
+// ======================== PROFILE ========================
+
+function updateProfileView(){
+  if(!userData)return;
+
+  const name=userData.name||"User";
+  const initials=name.slice(0,2).toUpperCase();
+
+  $("profileAvatar").textContent=initials;
+  $("profileDisplayName").textContent=name;
+  $("profileEmail").textContent=userData.email||"Demo Account";
+  $("profileUID").textContent=currentUser?.uid||"DEMO-ACCOUNT";
+  $("editName").value=userData.name;
+  $("editUsername").value=userData.username;
+  $("editBio").value=userData.bio;
+
+  $("profileWallet").textContent=money(userData.wallet);
+  $("profileCoins").textContent=number(userData.coins);
+  $("profileScore").textContent=number(userData.score);
+  $("profileFollowers").textContent=number(userData.followers);
+}
+
+window.saveProfile=async function(){
+  const name=$("editName").value.trim();
+  const username=$("editUsername").value.trim();
+
+  if(!name||!username){
+    showToast("Name and username are required.");
+    return;
+  }
+
+  userData.name=name;
+  userData.username=username;
+  userData.bio=$("editBio").value.trim();
+
+  if(firebaseReady&&currentUser){
+    await updateProfile(currentUser,{displayName:name});
+  }
+
+  await persist();
+  updateDashboard();
+  updateLeaderboard();
+  showToast("Profile updated!");
+};
+
+// ======================== LOANS ========================
+
+function updateLoans(){
+  if(!userData)return;
+
+  $("loanTotal").textContent=money(userData.loanTotal);
+  $("loanRepaid").textContent=money(userData.loanRepaid);
+  $("loanOutstanding").textContent=money(
+    Math.max(0,userData.loanTotal-userData.loanRepaid)
+  );
+}
+
+window.takeLoan=async function(){
+  const amount=Number($("loanAmount").value);
+
+  if(!Number.isFinite(amount)||amount<100||amount>5000){
+    showToast("Choose a virtual credit amount between ₹100 and ₹5,000.");
+    return;
+  }
+
+  userData.loanTotal+=amount;
+  await persist();
+  updateLoans();
+  showToast("Virtual credit added to your practice ledger.");
+};
+
+window.repayLoan=async function(){
+  const amount=Number($("repayAmount").value);
+  const outstanding=userData.loanTotal-userData.loanRepaid;
+
+  if(!Number.isFinite(amount)||amount<=0){
+    showToast("Enter a valid repayment amount.");
+    return;
+  }
+
+  if(amount>outstanding){
+    showToast("Amount exceeds outstanding virtual credit.");
+    return;
+  }
+
+  if(amount>userData.wallet){
+    showToast("Insufficient virtual wallet balance.");
+    return;
+  }
+
+  userData.wallet-=amount;
+  userData.loanRepaid+=amount;
+
+  await persist();
+  updateDashboard();
+  showToast("Virtual credit repayment successful.");
+};
+
+// ======================== LEADERBOARD ========================
+
+async function startLeaderboard(){
+  if(!firebaseReady)return;
+
+  if(unsubLeaderboard)unsubLeaderboard();
+
+  unsubLeaderboard=onSnapshot(
+    collection(db,"users"),
+    snapshot=>{
+      leaderboardUsers=snapshot.docs.map(d=>({
+        uid:d.id,...d.data()
+      }));
+      updateLeaderboard();
+    },
+    error=>{
+      console.error("Leaderboard error:",error);
+      showToast("Leaderboard permissions need configuration.");
+    }
+  );
+}
+
+function getAllPlayers(){
+  if(firebaseReady){
+    return leaderboardUsers;
+  }
+
+  return [
+    {
+      name:"Fast Coin User",username:"you",
+      wallet:8500,score:940,followers:85
+    },
+    {
+      name:"BlueTrader",username:"blue",
+      wallet:12500,score:870,followers:65
+    },
+    {
+      name:"CoinMaster",username:"coin",
+      wallet:11200,score:790,followers:53
+    },
+    {
+      name:"MarketPro",username:"market",
+      wallet:9800,score:710,followers:41
+    },
+    {
+      name:"SpeedKing",username:"speed",
+      wallet:7600,score:620,followers:28
+    }
+  ].concat(userData?[{
+    ...userData,
+    uid:currentUser?.uid||"demo-user"
+  }]:[]);
+}
+
+function leaderboardHTML(limit){
+  const players=getAllPlayers()
+    .sort((a,b)=>(b.score||0)-(a.score||0))
+    .slice(0,limit);
+
+  if(!players.length){
+    return '<tr><td colspan="6">No members found.</td></tr>';
+  }
+
+  return players.map((p,i)=>`
+    <tr>
+      <td><span class="rank ${i===0?"gold":i===1?"silver":i===2?"bronze":""}">${i+1}</span></td>
+      <td><div class="player">
+        <div class="avatar">${escapeHTML((p.name||"U").slice(0,1).toUpperCase())}</div>
+        ${escapeHTML(p.name||"Member")}
+      </div></td>
+      <td>${money(p.wallet)}</td>
+      <td><b>${number(p.score)}</b></td>
+      <td>${number(p.followers)}</td>
+      ${limit>5?"<td><span class='green'>● Active</span></td>":""}
+    </tr>
+  `).join("");
+}
+
+function updateLeaderboard(){
+  $("homeLeaderboard").innerHTML=leaderboardHTML(5);
+  $("fullLeaderboard").innerHTML=leaderboardHTML(100);
+}
+
+// ======================== CHART ========================
+
+function createMainChart(){
+  const canvas=$("mainChart");
+  if(!canvas)return;
+
+  if(mainChart)mainChart.destroy();
+
+  const labels=Array.from({length:20},(_,i)=>i+1);
+  const values=labels.map(()=>1000+Math.random()*150);
+
+  mainChart=new Chart(canvas,{
+    type:"line",
+    data:{
+      labels,
+      datasets:[{
+        data:values,
+        borderColor:"#2563eb",
+        borderWidth:2.5,
+        backgroundColor:"rgba(37,99,235,.08)",
+        fill:true,
+        tension:.4,
+        pointRadius:0
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:{display:false},ticks:{display:false}},
+        y:{grid:{color:"#f0f2f7"},ticks:{font:{size:9},color:"#9aa4b5"}}
+      }
+    }
+  });
+}
+
+function updateMainChart(){
+  if(!mainChart)return;
+  const data=mainChart.data.datasets[0].data;
+  data.shift();
+  data.push(data[data.length-1]*(1+(Math.random()-.49)*.015));
+  mainChart.update("none");
+}
+
+// ======================== STARTUP ========================
+
+initializeFirebase();
+
+// If Firebase is not configured, show a local demo.
+if(!firebaseConfig.apiKey ||
+   firebaseConfig.apiKey==="YOUR_API_KEY"){
+  userData=loadLocal();
+  demoMode=true;
+  initializeAppUI();
+}
+
 </script>
-
 </body>
 </html>
