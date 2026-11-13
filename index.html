@@ -1,192 +1,1180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0d1018">
-<title>Vault — Financial Simulation</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f7f9fc">
+<title>SpeedCheck - Website Speed Checker</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+
 <style>
-:root{--bg:#f4f6fa;--panel:#fff;--panel2:#f8f9fc;--text:#151a27;--muted:#788196;--line:#e8ebf2;--accent:#d99b19;--accent2:#f3c957;--green:#15966a;--red:#d64b58;--shadow:0 12px 35px #1b27400c}
-[data-theme=dark]{--bg:#0b0e15;--panel:#121722;--panel2:#171e2b;--text:#f2f4f8;--muted:#9aa4b7;--line:#252d3c;--shadow:0 12px 35px #0004}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;transition:background .2s,color .2s}
-button,input,select{font:inherit}button{cursor:pointer;border:0} .hidden{display:none!important}
-#auth{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 15% 15%,#f5d77b55,transparent 30%),var(--bg)}
-.auth-card{width:min(440px,100%);background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:34px;box-shadow:var(--shadow)}
-.brand{display:flex;align-items:center;gap:11px;font-weight:850;font-size:20px;letter-spacing:-.5px}.brand img{width:39px;height:39px;object-fit:contain;border-radius:50%}
-.brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:2px;font-weight:700;margin-top:2px}
-h1{font-size:26px;letter-spacing:-.8px;margin:28px 0 7px}p.sub{color:var(--muted);line-height:1.6;margin:0 0 22px}
-.field{margin:14px 0}.field label{display:block;color:var(--muted);font-size:11px;font-weight:750;margin-bottom:7px}.field input,.field select{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:11px;background:var(--panel2);color:var(--text);outline:none}.field input:focus,.field select:focus{border-color:var(--accent)}
-.btn{padding:11px 15px;border-radius:10px;font-weight:750;background:var(--panel2);color:var(--text);border:1px solid var(--line);transition:.2s}.btn:hover{transform:translateY(-1px);filter:brightness(1.04)}.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#241803;border:0}.full{width:100%}.switch{text-align:center;color:var(--muted);font-size:12px;margin-top:17px}.switch a{color:var(--accent);font-weight:800;cursor:pointer}.notice{font-size:10px;line-height:1.55;color:var(--muted);background:var(--panel2);border:1px solid var(--line);padding:12px;border-radius:10px;margin-top:20px}
-.shell{display:flex;min-height:100vh}.sidebar{width:246px;position:fixed;inset:0 auto 0 0;background:var(--panel);border-right:1px solid var(--line);padding:23px 16px;display:flex;flex-direction:column;z-index:5}.sidebar .brand{padding:0 10px 28px}.nav-label{font-size:9px;letter-spacing:1.5px;color:var(--muted);font-weight:850;padding:15px 12px 8px}.nav{display:flex;align-items:center;gap:12px;width:100%;padding:12px;border-radius:10px;background:transparent;color:var(--muted);text-align:left;font-weight:650;margin:2px 0}.nav .ico{width:19px;text-align:center;font-size:16px}.nav.active,.nav:hover{background:color-mix(in srgb,var(--accent) 13%,transparent);color:var(--accent)}.side-bottom{margin-top:auto}
-.main{margin-left:246px;width:calc(100% - 246px);padding:25px 34px 60px;max-width:1600px}.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}.topbar h2{font-size:19px;margin:0;letter-spacing:-.4px}.top-actions{display:flex;align-items:center;gap:10px}.top-actions select{background:var(--panel);border:1px solid var(--line);padding:9px;border-radius:9px;color:var(--text);font-size:11px}.avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;background:var(--panel2);display:grid;place-items:center;font-weight:800;border:1px solid var(--line)}
-.page{display:none}.page.active{display:block;animation:fade .25s ease}@keyframes fade{from{opacity:.3;transform:translateY(5px)}to{opacity:1;transform:none}}
-.welcome{display:flex;justify-content:space-between;align-items:end;margin-bottom:20px;gap:15px}.welcome h1{font-size:25px;margin:0 0 5px}.welcome p{margin:0;color:var(--muted);font-size:12px}
-.grid{display:grid;gap:15px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:17px}.two{grid-template-columns:1.35fr 1fr}.three{grid-template-columns:repeat(3,1fr)}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:19px;box-shadow:var(--shadow);min-width:0}.stat-label{font-size:11px;color:var(--muted);font-weight:700}.stat-value{font-size:25px;font-weight:850;letter-spacing:-.8px;margin:11px 0 5px}.stat-foot{font-size:10px;color:var(--muted)}.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.card-head h3{margin:0;font-size:14px}.pill{font-size:9px;font-weight:850;letter-spacing:.6px;padding:5px 8px;border-radius:20px;background:#dff5eb;color:#13835e}.muted{color:var(--muted);font-size:11px;line-height:1.6}
-.chart{height:190px;width:100%;margin-top:14px}.chart svg{width:100%;height:100%;overflow:visible}.chart path{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.chart .area{fill:url(#fill);stroke:none}
-.quick{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.quick .btn{flex:1}
-.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{border-collapse:collapse;width:100%;min-width:550px}th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);font-size:11px}th{color:var(--muted);font-weight:750;background:var(--panel2)}td{font-weight:600}.positive{color:var(--green)}.negative{color:var(--red)}
-.asset{display:flex;align-items:center;gap:9px}.asset-icon{width:31px;height:31px;border-radius:10px;background:color-mix(in srgb,var(--accent) 15%,transparent);display:grid;place-items:center;color:var(--accent);font-weight:900}
-.reward-grid{grid-template-columns:repeat(3,1fr)}.reward-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:17px}.reward-card h3{font-size:13px;margin:8px 0}.reward-card p{font-size:10px;color:var(--muted);min-height:30px;line-height:1.5}.reward-card .btn{width:100%;margin-top:12px}
-.progress{height:7px;background:var(--panel2);border-radius:9px;overflow:hidden;margin:10px 0}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0}
-.noticebox{padding:13px;border-radius:11px;background:color-mix(in srgb,var(--accent) 10%,var(--panel));border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));color:var(--muted);font-size:11px;line-height:1.6;margin-bottom:15px}
-.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.profile-pic{width:76px;height:76px;object-fit:cover;border-radius:50%;border:3px solid var(--accent)}
-.mobile-nav{display:none}
-@media(max-width:1000px){.stats{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}.reward-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:700px){.sidebar{display:none}.main{margin:0;width:100%;padding:18px 14px 88px}.topbar{margin-bottom:22px}.top-actions select{max-width:90px}.welcome{align-items:start;flex-direction:column}.welcome h1{font-size:22px}.stats{gap:9px}.card{padding:15px}.stat-value{font-size:21px}.reward-grid,.three{grid-template-columns:repeat(2,1fr)}.mobile-nav{display:flex;position:fixed;z-index:8;bottom:0;left:0;right:0;background:var(--panel);border-top:1px solid var(--line);justify-content:space-around;padding:8px 2px env(safe-area-inset-bottom);}.mobile-nav button{background:none;color:var(--muted);font-size:9px;padding:5px}.mobile-nav button span{display:block;font-size:17px;margin-bottom:3px}}
-@media(max-width:390px){.stats{grid-template-columns:1fr 1fr}.reward-grid{grid-template-columns:1fr 1fr}}
-</style></head>
+:root {
+  --primary: #635bff;
+  --primary-light: #eeedff;
+  --green: #16b879;
+  --red: #ef5350;
+  --dark: #172033;
+  --muted: #8791a5;
+  --border: #e9edf4;
+  --bg: #f7f9fc;
+  --white: #ffffff;
+  --shadow: 0 8px 35px rgba(32,45,80,.055);
+}
+
+* {margin:0;padding:0;box-sizing:border-box}
+
+body {
+  font-family:Inter, sans-serif;
+  background:var(--bg);
+  color:var(--dark);
+  min-height:100vh;
+}
+
+button,input {font:inherit}
+button {cursor:pointer}
+
+.navbar {
+  height:75px;
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 7%;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+.logo {
+  display:flex;
+  align-items:center;
+  gap:11px;
+  font-size:21px;
+  font-weight:800;
+  letter-spacing:-1px;
+}
+
+.logo-icon {
+  width:37px;
+  height:37px;
+  background:var(--primary);
+  color:white;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+}
+
+.logo span {color:var(--primary)}
+
+.nav-right {
+  display:flex;
+  align-items:center;
+  gap:24px;
+  color:#69758a;
+  font-size:13px;
+}
+
+.nav-right a {text-decoration:none;color:inherit}
+.nav-right a:hover {color:var(--primary)}
+
+.status {
+  background:#e8faf2;
+  color:#139b69;
+  border-radius:30px;
+  padding:8px 13px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.dot {
+  width:7px;height:7px;
+  border-radius:50%;
+  background:#16b879;
+}
+
+main {
+  max-width:1100px;
+  margin:auto;
+  padding:65px 22px 80px;
+}
+
+.hero {
+  text-align:center;
+  margin-bottom:38px;
+  animation:fadeUp .7s ease;
+}
+
+.tag {
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 13px;
+  border-radius:30px;
+  background:var(--primary-light);
+  color:var(--primary);
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:22px;
+}
+
+.hero h1 {
+  font-size:clamp(34px,5vw,51px);
+  line-height:1.13;
+  letter-spacing:-2.5px;
+  margin-bottom:17px;
+}
+
+.hero h1 span {color:var(--primary)}
+
+.hero p {
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.8;
+  max-width:590px;
+  margin:auto;
+}
+
+.checker {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:27px;
+  box-shadow:var(--shadow);
+  max-width:790px;
+  margin:auto;
+  animation:fadeUp .8s ease;
+}
+
+.input-label {
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:12px;
+  display:block;
+}
+
+.input-box {
+  display:flex;
+  align-items:center;
+  border:1.5px solid #e4e8f0;
+  background:#fafbfe;
+  padding:7px;
+  border-radius:12px;
+  transition:.25s;
+}
+
+.input-box:focus-within {
+  border-color:var(--primary);
+  box-shadow:0 0 0 4px rgba(99,91,255,.09);
+}
+
+.input-box input {
+  flex:1;
+  min-width:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  padding:13px 12px;
+  color:var(--dark);
+  font-size:14px;
+}
+
+.input-box button {
+  border:0;
+  border-radius:9px;
+  padding:14px 22px;
+  background:var(--primary);
+  color:white;
+  font-size:13px;
+  font-weight:700;
+  display:flex;
+  gap:9px;
+  align-items:center;
+  transition:.25s;
+}
+
+.input-box button:hover {
+  background:#5148eb;
+  transform:translateY(-2px);
+}
+
+.input-box button:disabled {opacity:.6;cursor:wait;transform:none}
+
+.hint {
+  color:#a0a8b7;
+  font-size:11px;
+  margin-top:12px;
+}
+
+.error {
+  display:none;
+  margin-top:12px;
+  color:var(--red);
+  font-size:12px;
+}
+
+.results {
+  display:none;
+  margin-top:35px;
+  animation:fadeUp .6s ease;
+}
+
+.section-heading {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.section-heading h2 {
+  font-size:19px;
+  letter-spacing:-.5px;
+}
+
+.section-heading span {
+  color:var(--muted);
+  font-size:11px;
+}
+
+.dashboard {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+.panel {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:24px;
+  box-shadow:var(--shadow);
+}
+
+.panel-title {
+  font-size:13px;
+  font-weight:700;
+}
+
+.panel-subtitle {
+  font-size:11px;
+  color:var(--muted);
+  margin-top:6px;
+}
+
+.gauge-wrap {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:22px 0 10px;
+}
+
+.gauge {
+  width:190px;
+  height:190px;
+  position:relative;
+}
+
+.gauge svg {
+  width:100%;
+  height:100%;
+  transform:rotate(-90deg);
+}
+
+.gauge circle {
+  fill:none;
+  stroke-width:11;
+}
+
+.gauge .track {stroke:#edf0f6}
+
+.gauge .progress {
+  stroke:var(--primary);
+  stroke-linecap:round;
+  stroke-dasharray:440;
+  stroke-dashoffset:440;
+  transition:stroke-dashoffset 1.5s ease,stroke .5s;
+}
+
+.gauge-center {
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+.score {
+  font-size:52px;
+  font-weight:800;
+  letter-spacing:-3px;
+}
+
+.score-label {
+  color:var(--muted);
+  font-size:11px;
+  margin-top:4px;
+}
+
+.grade {
+  text-align:center;
+  font-size:13px;
+  font-weight:700;
+  color:var(--green);
+  margin-top:7px;
+}
+
+.metrics {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:22px;
+}
+
+.metric {
+  padding:16px;
+  background:#f9faff;
+  border:1px solid #edf0f6;
+  border-radius:12px;
+  transition:.25s;
+}
+
+.metric:hover {
+  transform:translateY(-3px);
+  border-color:#d5d2ff;
+}
+
+.metric-icon {
+  width:31px;
+  height:31px;
+  background:var(--primary-light);
+  color:var(--primary);
+  border-radius:9px;
+  display:grid;
+  place-items:center;
+  margin-bottom:12px;
+}
+
+.metric-label {
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:7px;
+}
+
+.metric-value {
+  font-size:19px;
+  font-weight:800;
+  word-break:break-word;
+}
+
+.metric-note {
+  font-size:10px;
+  color:#9ca5b5;
+  margin-top:5px;
+}
+
+.recommendations {
+  margin-top:18px;
+}
+
+.recommendation {
+  display:flex;
+  gap:13px;
+  align-items:flex-start;
+  padding:15px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.recommendation:last-child {border:0}
+
+.rec-icon {
+  width:33px;
+  height:33px;
+  border-radius:9px;
+  background:#e8faf2;
+  color:var(--green);
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+}
+
+.rec-text strong {
+  display:block;
+  font-size:12px;
+  margin-bottom:5px;
+}
+
+.rec-text p {
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.info {
+  padding:15px;
+  margin-top:18px;
+  background:#f5f5ff;
+  border-radius:11px;
+  color:#6863ad;
+  font-size:11px;
+  line-height:1.7;
+}
+
+.history {
+  margin-top:35px;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:24px;
+  box-shadow:var(--shadow);
+}
+
+.history-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.history-head h2 {font-size:17px}
+
+.clear-btn {
+  background:none;
+  border:0;
+  color:var(--primary);
+  font-size:11px;
+  font-weight:700;
+}
+
+.history-item {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
+  font-size:12px;
+}
+
+.history-item:last-child {border:0}
+
+.history-url {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  max-width:55%;
+  font-weight:600;
+}
+
+.history-score {
+  color:var(--green);
+  font-weight:800;
+}
+
+.empty {
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  padding:20px;
+}
+
+.features {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  margin-top:65px;
+}
+
+.feature {
+  text-align:center;
+  padding:25px 15px;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:15px;
+  transition:.3s;
+}
+
+.feature:hover {
+  transform:translateY(-5px);
+  box-shadow:var(--shadow);
+}
+
+.feature-icon {
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  background:var(--primary-light);
+  color:var(--primary);
+  margin:0 auto 15px;
+  border-radius:12px;
+}
+
+.feature h3 {
+  font-size:13px;
+  margin-bottom:8px;
+}
+
+.feature p {
+  font-size:11px;
+  line-height:1.7;
+  color:var(--muted);
+}
+
+footer {
+  text-align:center;
+  padding:25px;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  font-size:11px;
+}
+
+.loader {
+  width:15px;
+  height:15px;
+  border:2px solid rgba(255,255,255,.4);
+  border-top-color:white;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+}
+
+@keyframes spin {to{transform:rotate(360deg)}}
+
+@keyframes fadeUp {
+  from {opacity:0;transform:translateY(18px)}
+  to {opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:700px) {
+  .navbar {padding:0 18px}
+  .nav-right {gap:10px}
+  .nav-right a {display:none}
+  main {padding:45px 15px 55px}
+  .checker {padding:19px}
+  .input-box {flex-wrap:wrap}
+  .input-box input {width:100%;flex:auto}
+  .input-box button {width:100%;justify-content:center}
+  .dashboard {grid-template-columns:1fr}
+  .features {grid-template-columns:1fr}
+  .hero h1 {letter-spacing:-1.5px}
+  .panel {padding:20px}
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
+}
+</style>
+</head>
+
 <body>
-<section id="auth">
- <div class="auth-card">
-  <div class="brand"><img src="assets/gold-coin.webp"><div><span id="brandAuth">VAULT</span><small>VIRTUAL FINANCE LAB</small></div></div>
-  <div id="loginForm"><h1>Welcome back</h1><p class="sub">Sign in to your simulation workspace.</p>
-   <div class="field"><label>Email address</label><input id="loginEmail" type="email" placeholder="name@example.com"></div>
-   <div class="field"><label>Password</label><input id="loginPass" type="password" placeholder="Your password"></div>
-   <button class="btn primary full" onclick="login()">Sign in</button>
-   <div class="switch">New here? <a onclick="showRegister()">Create an account</a></div>
+
+<header class="navbar">
+  <div class="logo">
+    <div class="logo-icon"><i data-lucide="gauge"></i></div>
+    Speed<span>Check</span>
   </div>
-  <div id="registerForm" class="hidden"><h1>Create your account</h1><p class="sub">Set up a local demo profile to get started.</p>
-   <div class="field"><label>Full name</label><input id="regName" placeholder="Your name"></div>
-   <div class="field"><label>Unique username</label><input id="regUser" placeholder="e.g. arjun_01"></div>
-   <div class="field"><label>Email</label><input id="regEmail" type="email" placeholder="name@example.com"></div>
-   <div class="field"><label>Password (6+ characters)</label><input id="regPass" type="password"></div>
-   <div class="field"><label>Profile picture</label><input id="regPic" type="file" accept="image/*"></div>
-   <button class="btn primary full" onclick="register()">Create account</button>
-   <div class="switch">Already registered? <a onclick="showLogin()">Sign in</a></div>
+
+  <div class="nav-right">
+    <a href="#checker">Speed Test</a>
+    <a href="#features">Features</a>
+    <a href="#history">History</a>
+    <div class="status"><div class="dot"></div> Ready to test</div>
   </div>
-  <div class="notice">DEMO ENVIRONMENT — All balances, markets, rewards, businesses and transfers are simulated in this browser. No real deposits, investments, withdrawals, bets or payouts occur.</div>
- </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="tag">
+    <i data-lucide="zap" size="14"></i>
+    WEBSITE PERFORMANCE TOOL
+  </div>
+
+  <h1>Check Your Website <span>Speed</span></h1>
+
+  <p>
+    Discover how quickly your website responds.
+    Test its connection, measure response time and
+    get useful performance improvement suggestions.
+  </p>
 </section>
-<div id="app" class="shell hidden">
-<aside class="sidebar"><div class="brand"><img src="assets/gold-coin.webp"><div><span id="brandSide">VAULT</span><small>VIRTUAL FINANCE LAB</small></div></div>
- <div class="nav-label">WORKSPACE</div>
- <button class="nav active" data-page="home" onclick="go('home')"><span class="ico">▦</span>Overview</button>
- <button class="nav" data-page="earn" onclick="go('earn')"><span class="ico">✧</span>Rewards</button>
- <button class="nav" data-page="markets" onclick="go('markets')"><span class="ico">⌁</span>Coin Share Market</button>
- <button class="nav" data-page="business" onclick="go('business')"><span class="ico">▤</span>Create Business</button>
- <button class="nav" data-page="directory" onclick="go('directory')"><span class="ico">◎</span>Investor Directory</button>
- <button class="nav" data-page="wallet" onclick="go('wallet')"><span class="ico">▣</span>Wallet & Ledger</button>
- <button class="nav" data-page="transfer" onclick="go('transfer')"><span class="ico">⇄</span>Transfers</button>
- <div class="nav-label">ACCOUNT</div><button class="nav" data-page="profile" onclick="go('profile')"><span class="ico">♙</span>Profile & Settings</button>
- <div class="side-bottom"><button class="nav" onclick="logout()"><span class="ico">↗</span>Sign out</button></div>
-</aside>
-<main class="main">
-<header class="topbar"><h2 id="pageTitle">Overview</h2><div class="top-actions">
- <select id="language" aria-label="Language"><option>English</option><option>हिन्दी</option><option>বাংলা</option><option>தமிழ்</option><option>తెలుగు</option><option>मराठी</option></select>
- <button class="btn" onclick="toggleTheme()" title="Toggle theme">◐</button><button class="btn" onclick="togglePreview()">⛶</button>
- <img id="topAvatar" class="avatar" alt="Profile"><b id="topName" style="font-size:11px"></b>
-</div></header>
-<section id="home" class="page active">
- <div class="welcome"><div><h1>Good to see you, <span id="welcomeName">Investor</span></h1><p>Your financial simulation at a glance.</p></div><span class="pill">SIMULATION ACTIVE</span></div>
- <div class="grid stats">
-  <div class="card"><div class="stat-label">Local Coin Wallet</div><div class="stat-value" id="homeRupees">₹0.00</div><div class="stat-foot">Illustrative conversion value</div></div>
-  <div class="card"><div class="stat-label">Coin Balance</div><div class="stat-value" id="homeCoins">0</div><div class="stat-foot">Virtual platform coins</div></div>
-  <div class="card"><div class="stat-label">Business Portfolio</div><div class="stat-value" id="homeInvest">₹0</div><div class="stat-foot">Marked-to-simulation value</div></div>
-  <div class="card"><div class="stat-label">Rewards Claimed Today</div><div class="stat-value" id="homeRewards">0 / 13</div><div class="stat-foot">Daily reward allowance</div></div>
- </div>
- <div class="grid two">
-  <div class="card"><div class="card-head"><h3>Portfolio performance</h3><span class="pill">LIVE DEMO</span></div><div class="stat-value" id="portfolioValue">₹0</div><div class="muted">Illustrative market movement, not an actual investment return.</div><div class="chart"><svg viewBox="0 0 600 190" preserveAspectRatio="none"><defs><linearGradient id="fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d99b19" stop-opacity=".3"/><stop offset="1" stop-color="#d99b19" stop-opacity="0"/></linearGradient></defs><path id="chartArea" class="area"></path><path id="chartLine"></path></svg></div></div>
-  <div class="card"><div class="card-head"><h3>Quick actions</h3></div><p class="muted">Manage your virtual wallet and discover opportunities.</p><div class="quick"><button class="btn primary" onclick="go('earn')">Claim rewards</button><button class="btn" onclick="go('business')">Create business</button></div><div style="margin-top:25px"><div class="stat-label">Fixed demo conversion rate</div><div class="stat-value" style="font-size:22px">1,000 coins = ₹10</div><div class="muted">Minimum conversion: 1,000 coins</div></div></div>
- </div>
- <div class="card" style="margin-top:16px"><div class="card-head"><h3>Recent activity</h3><button class="btn" onclick="go('wallet')">Full ledger</button></div><div id="homeTx"></div></div>
+
+<section class="checker" id="checker">
+  <label class="input-label" for="websiteUrl">
+    Enter Website URL
+  </label>
+
+  <div class="input-box">
+    <input
+      id="websiteUrl"
+      type="text"
+      placeholder="https://example.com"
+      autocomplete="url"
+    >
+
+    <button id="testBtn" onclick="startTest()">
+      <i data-lucide="zap" size="16"></i>
+      Check Speed
+    </button>
+  </div>
+
+  <div class="hint">
+    <i data-lucide="shield-check" size="12" style="display:inline"></i>
+    Enter a valid public website URL to begin testing.
+  </div>
+
+  <div class="error" id="error"></div>
 </section>
-<section id="earn" class="page"><div class="welcome"><div><h1>Rewards centre</h1><p>Three daily free claims plus ten promotional-demo slots.</p></div></div>
- <div class="noticebox">Promotional slots use a local 30-second timer to demonstrate an ad flow. No ad network is connected and no ad is actually served. Claims reset by local calendar day.</div>
- <div class="grid stats" style="grid-template-columns:repeat(2,1fr)"><div class="card"><div class="stat-label">Available coins</div><div class="stat-value" id="earnCoins">0</div></div><div class="card"><div class="stat-label">Claims used today</div><div class="stat-value" id="earnCount">0 / 13</div><div class="progress"><span id="claimProgress"></span></div></div></div>
- <div class="grid reward-grid" id="rewardGrid"></div>
+
+<section class="results" id="results">
+
+  <div class="section-heading">
+    <h2>Performance Results</h2>
+    <span id="testedUrl">Website analysis</span>
+  </div>
+
+  <div class="dashboard">
+
+    <div class="panel">
+      <div class="panel-title">Quick Check Score</div>
+      <div class="panel-subtitle">
+        Estimated score based on connection response time
+      </div>
+
+      <div class="gauge-wrap">
+        <div class="gauge">
+          <svg viewBox="0 0 160 160">
+            <circle class="track" cx="80" cy="80" r="70"
+              stroke-dasharray="330 440"
+              stroke-dashoffset="-55"/>
+            <circle class="progress" id="gaugeProgress"
+              cx="80" cy="80" r="70"
+              stroke-dasharray="330 440"
+              stroke-dashoffset="330"/>
+          </svg>
+
+          <div class="gauge-center">
+            <div class="score" id="score">--</div>
+            <div class="score-label">OUT OF 100</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grade" id="grade">Waiting for test</div>
+
+      <div class="info">
+        This is a quick connection score, not a Google Lighthouse score.
+        A full performance audit requires browser rendering and additional measurements.
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Performance Metrics</div>
+      <div class="panel-subtitle">
+        Measurements available to this browser
+      </div>
+
+      <div class="metrics">
+
+        <div class="metric">
+          <div class="metric-icon"><i data-lucide="clock" size="16"></i></div>
+          <div class="metric-label">Response Time</div>
+          <div class="metric-value" id="responseTime">--</div>
+          <div class="metric-note">Connection attempt</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-icon"><i data-lucide="download" size="16"></i></div>
+          <div class="metric-label">Downloaded Data</div>
+          <div class="metric-value" id="pageSize">--</div>
+          <div class="metric-note">Only if browser permits</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-icon"><i data-lucide="server" size="16"></i></div>
+          <div class="metric-label">HTTP Status</div>
+          <div class="metric-value" id="httpStatus">--</div>
+          <div class="metric-note">Response availability</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-icon"><i data-lucide="activity" size="16"></i></div>
+          <div class="metric-label">Connection</div>
+          <div class="metric-value" id="connection">--</div>
+          <div class="metric-note">Reachability check</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="panel recommendations">
+    <div class="panel-title">Performance Recommendations</div>
+    <div class="panel-subtitle">
+      Suggestions based on your quick check
+    </div>
+
+    <div id="recommendations">
+      <div class="recommendation">
+        <div class="rec-icon"><i data-lucide="check" size="16"></i></div>
+        <div class="rec-text">
+          <strong>Ready to analyze</strong>
+          <p>Run a test to see recommendations.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>
-<section id="markets" class="page"><div class="welcome"><div><h1>Coin Share Market</h1><p>Virtual asset prices move smoothly for educational experimentation.</p></div></div>
- <div class="noticebox">All quotes are synthetic. They are not exchange prices, financial advice, or offers to trade real securities.</div>
- <div class="grid three" id="marketGrid"></div>
- <div class="card" style="margin-top:16px"><div class="card-head"><h3>Buy virtual market units</h3><span class="pill">DEMO ONLY</span></div><div class="row"><div class="field"><label>Asset</label><select id="assetSelect"></select></div><div class="field"><label>Amount (Local Coin ₹)</label><input id="investAmount" type="number" min="1" placeholder="e.g. 500"></div></div><button class="btn primary" onclick="buyAsset()">Buy virtual units</button></div>
- <div class="card" style="margin-top:16px"><div class="card-head"><h3>My holdings</h3></div><div id="holdings"></div></div>
+
+<section class="history" id="history">
+  <div class="history-head">
+    <h2>Recent Tests</h2>
+    <button class="clear-btn" onclick="clearHistory()">Clear History</button>
+  </div>
+
+  <div id="historyList">
+    <div class="empty">No tests performed yet.</div>
+  </div>
 </section>
-<section id="business" class="page"><div class="welcome"><div><h1>Create Business</h1><p>Launch a virtual company and let other demo users invest.</p></div></div>
- <div class="noticebox">A ₹10,000 minimum self-investment is required. This is a simulated commitment only. It does not create a legal company, security, or real ownership interest.</div>
- <div class="card"><div class="card-head"><h3>Launch a virtual business</h3></div><div class="field"><label>Business name</label><input id="bizName" maxlength="40" placeholder="e.g. Jaipur Mobility Labs"></div><div class="field"><label>Short description</label><input id="bizDesc" maxlength="120" placeholder="What does your business do?"></div><div class="field"><label>Your self-investment (₹)</label><input id="bizAmount" type="number" min="10000" value="10000"></div><button class="btn primary" onclick="createBusiness()">Create virtual business — ₹10,000 minimum</button></div>
- <div class="card" style="margin-top:16px"><div class="card-head"><h3>Public virtual businesses</h3></div><div id="businessList"></div></div>
+
+<section class="features" id="features">
+
+  <div class="feature">
+    <div class="feature-icon"><i data-lucide="gauge"></i></div>
+    <h3>Speed Measurement</h3>
+    <p>Measure how quickly a website responds to a browser connection request.</p>
+  </div>
+
+  <div class="feature">
+    <div class="feature-icon"><i data-lucide="bar-chart-3"></i></div>
+    <h3>Performance Insights</h3>
+    <p>View connection measurements and practical optimization suggestions.</p>
+  </div>
+
+  <div class="feature">
+    <div class="feature-icon"><i data-lucide="history"></i></div>
+    <h3>Test History</h3>
+    <p>Keep track of your recent website tests directly in your browser.</p>
+  </div>
+
 </section>
-<section id="directory" class="page"><div class="welcome"><div><h1>Investor directory</h1><p>Browse local demo profiles and simulated valuations.</p></div></div>
- <div class="field"><label>Search by username or name</label><input id="directorySearch" placeholder="Search investors..." oninput="renderDirectory()"></div><div class="card"><div id="directoryList"></div></div><div class="card" id="publicProfile" style="margin-top:15px"><div class="empty">Select an investor to view their public demo portfolio.</div></div>
-</section>
-<section id="wallet" class="page"><div class="welcome"><div><h1>Wallet & ledger</h1><p>Review balances, conversions and account activity.</p></div></div>
- <div class="grid two"><div class="card"><div class="stat-label">Coin balance</div><div class="stat-value" id="walletCoins">0</div></div><div class="card"><div class="stat-label">Local Coin value</div><div class="stat-value" id="walletValue">₹0.00</div></div></div>
- <div class="card" style="margin-top:16px"><div class="card-head"><h3>Convert coins to Local Coin</h3></div><div class="muted">1,000 coins = ₹10. Minimum conversion is 1,000 coins. Conversion only changes simulated balances.</div><div class="field"><label>Coins to convert</label><input type="number" id="convertInput" min="1000" step="100" value="1000" oninput="updateConversion()"></div><div class="stat-value" id="convertResult">₹10.00</div><button class="btn primary" onclick="convertCoins()">Convert coins</button></div>
- <div class="card" style="margin-top:16px"><div class="card-head"><h3>Transaction history</h3></div><div id="transactionTable"></div></div>
-</section>
-<section id="transfer" class="page"><div class="welcome"><div><h1>Peer-to-peer transfer</h1><p>Send simulated Local Coin to another account in this browser.</p></div></div>
- <div class="noticebox">Transfers are local demo ledger entries only. They are not bank transfers, UPI payments, or redeemable money. Both accounts must exist in this browser's local data.</div>
- <div class="card"><div class="field"><label>Recipient email or username</label><input id="recipient" placeholder="username or name@example.com"></div><div class="field"><label>Amount (Local Coin ₹)</label><input id="transferAmount" type="number" min="1" placeholder="Amount in rupees"></div><button class="btn primary" onclick="transfer()">Send simulated transfer</button></div>
-</section>
-<section id="profile" class="page"><div class="welcome"><div><h1>Profile & settings</h1><p>Personalize your workspace.</p></div></div>
- <div class="card"><div class="row" style="align-items:center"><img id="profilePic" class="profile-pic"><div><h3 id="profileName"></h3><div class="muted" id="profileMeta"></div></div></div>
- <div class="field"><label>Display name</label><input id="editName"></div><div class="field"><label>Unique username</label><input id="editUsername"></div><div class="field"><label>Change profile picture</label><input id="editPic" type="file" accept="image/*"></div>
- <div class="field"><label>Custom brand name</label><input id="brandInput" maxlength="24" placeholder="VAULT"></div>
- <div class="row"><button class="btn primary" onclick="saveProfile()">Save profile</button><button class="btn" onclick="toggleTheme()">Toggle dark / light</button><button class="btn" onclick="togglePreview()">Full-screen preview</button></div>
- <div class="field"><label>Layout density</label><select id="density" onchange="setDensity()"><option value="comfortable">Comfortable</option><option value="compact">Compact</option></select></div>
- <button class="btn" onclick="exportProject()">Download project ZIP</button></div>
-</section>
-</main></div>
-<nav class="mobile-nav hidden" id="mobileNav"><button onclick="go('home')"><span>▦</span>Home</button><button onclick="go('earn')"><span>✧</span>Rewards</button><button onclick="go('markets')"><span>⌁</span>Market</button><button onclick="go('wallet')"><span>▣</span>Wallet</button><button onclick="go('profile')"><span>♙</span>Profile</button></nav>
-<div id="toast" style="position:fixed;bottom:25px;right:22px;background:#202633;color:white;padding:13px 17px;border-radius:10px;z-index:30;opacity:0;pointer-events:none;transition:.25s;max-width:320px;font-size:12px"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+</main>
+
+<footer>
+  © 2026 SpeedCheck. Simple website performance testing.
+</footer>
+
 <script>
-const $=id=>document.getElementById(id), DB='vault_sim_v2', SESSION='vault_session_v2', RATE=100;
-let db=JSON.parse(localStorage.getItem(DB)||'{"users":{},"businesses":[]}'), current=localStorage.getItem(SESSION), prices={BTC:6500000,ETH:220000,SOL:15000}, base={BTC:6500000,ETH:220000,SOL:15000}, history=Array.from({length:28},(_,i)=>100+i*.25), marketTimer=null, adTimers={};
-const assets=[{symbol:'BTC',name:'Bitcoin',icon:'₿'},{symbol:'ETH',name:'Ethereum',icon:'◆'},{symbol:'SOL',name:'Solana',icon:'S'}];
-const dayKey=()=>new Date().toLocaleDateString('en-CA');
-const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2});
-const uid=()=>Math.random().toString(36).slice(2,10);
-function save(){localStorage.setItem(DB,JSON.stringify(db))}
-function me(){return db.users[current]}
-function toast(s){let t=$('toast');t.textContent=s;t.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.opacity=0,2600)}
-function safe(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function showRegister(){$('loginForm').classList.add('hidden');$('registerForm').classList.remove('hidden')}
-function showLogin(){$('registerForm').classList.add('hidden');$('loginForm').classList.remove('hidden')}
-function imageData(file){return new Promise((res,rej)=>{if(!file)return res('');let r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)})}
-async function register(){let name=$('regName').value.trim(),username=$('regUser').value.trim().toLowerCase(),email=$('regEmail').value.trim().toLowerCase(),pass=$('regPass').value;
- if(!name||! /^[a-z0-9_]{3,18}$/.test(username)||!email.includes('@')||pass.length<6)return toast('Enter valid details. Username: 3–18 letters, numbers or underscores.');
- if(Object.values(db.users).some(u=>u.username===username)||db.users[email])return toast('Email or username already exists.');
- let avatar=await imageData($('regPic').files[0]);db.users[email]={id:uid(),name,username,email,password:pass,avatar,coins:0,local:20000,rewards:[],rewardDay:dayKey(),holdings:{},transactions:[],businessIds:[],created:Date.now()};
- save();start(email)}
-function login(){let e=$('loginEmail').value.trim().toLowerCase(),p=$('loginPass').value;if(!db.users[e]||db.users[e].password!==p)return toast('Email or password is incorrect.');start(e)}
-function start(email){current=email;localStorage.setItem(SESSION,email);$('auth').classList.add('hidden');$('app').classList.remove('hidden');$('mobileNav').classList.remove('hidden');render();go('home')}
-function logout(){current=null;localStorage.removeItem(SESSION);$('app').classList.add('hidden');$('mobileNav').classList.add('hidden');$('auth').classList.remove('hidden');showLogin()}
-function go(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$(page).classList.add('active');document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('active',n.dataset.page===page));let titles={home:'Overview',earn:'Rewards centre',markets:'Coin Share Market',business:'Create Business',directory:'Investor Directory',wallet:'Wallet & Ledger',transfer:'Transfers',profile:'Profile & Settings'};$('pageTitle').textContent=titles[page];render()}
-function normalizeDay(u){if(u.rewardDay!==dayKey()){u.rewardDay=dayKey();u.rewards=[];save()}}
-function totalPortfolio(u){return Object.entries(u.holdings||{}).reduce((s,[k,q])=>s+(prices[k]||0)*q,0)+(db.businesses||[]).filter(b=>b.owner===u.email).reduce((s,b)=>s+b.value,0)}
-function record(u,type,amount,desc){u.transactions.unshift({id:uid(),type,amount,desc,date:new Date().toLocaleString()});u.transactions=u.transactions.slice(0,200);save()}
-function render(){if(!current||!me())return;let u=me();normalizeDay(u);let val=u.coins/RATE+u.local+totalPortfolio(u);
- $('welcomeName').textContent=u.name;$('topName').textContent='@'+u.username;$('topAvatar').src=u.avatar||'';$('topAvatar').alt=u.name;$('homeRupees').textContent=money(u.local+u.coins/RATE);$('homeCoins').textContent=u.coins.toLocaleString('en-IN');$('homeInvest').textContent=money(totalPortfolio(u));$('homeRewards').textContent=u.rewards.length+' / 13';$('portfolioValue').textContent=money(val);$('earnCoins').textContent=u.coins.toLocaleString('en-IN');$('earnCount').textContent=u.rewards.length+' / 13';$('claimProgress').style.width=(u.rewards.length/13*100)+'%';$('walletCoins').textContent=u.coins.toLocaleString('en-IN');$('walletValue').textContent=money(u.local+u.coins/RATE);
- $('profilePic').src=u.avatar||'';$('profileName').textContent=u.name;$('profileMeta').textContent='@'+u.username+' · '+u.email;$('editName').value=u.name;$('editUsername').value=u.username;$('brandInput').value=localStorage.getItem('vault_brand')||'VAULT';$('brandAuth').textContent=$('brandSide').textContent=localStorage.getItem('vault_brand')||'VAULT';
- renderRewards();renderMarket();renderHoldings();renderBusinesses();renderDirectory();renderTransactions();$('homeTx').innerHTML=u.transactions.slice(0,5).map(t=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);gap:12px"><b>${safe(t.desc)}</b><span>${money(t.amount)}</span></div>`).join('')||'<div class="muted">No activity yet.</div>';updateConversion()}
-const rewardDefs=[...Array(3)].map((_,i)=>({id:'free'+i,name:['Daily check-in','Daily insight','Community pulse'][i],kind:'free',coins:100+i*50,desc:'One of three free daily reward claims.'}),...Array(10).map((_,i)=>({id:'ad'+i,name:'Promotional slot '+(i+1),kind:'ad',coins:200,desc:'Complete a 30-second promotional demo to unlock this slot.'})));
-function renderRewards(){let u=me();$('rewardGrid').innerHTML=rewardDefs.map(r=>{let done=u.rewards.includes(r.id),busy=adTimers[r.id]!=null;return `<div class="reward-card"><span class="pill">${r.kind==='free'?'FREE DAILY':'PROMO DEMO'}</span><h3>${r.name}</h3><p>${r.desc}</p><b style="color:var(--accent)">+${r.coins} coins</b><button class="btn ${done?'':'primary'}" ${done?'disabled':''} onclick="${r.kind==='free'?`claim('${r.id}')`:`watchAd('${r.id}')`}">${done?'Claimed':busy?'Ad running…':r.kind==='free'?'Claim free reward':'Watch 30s demo'}</button></div>`}).join('')}
-function claim(id){let u=me(),r=rewardDefs.find(x=>x.id===id);normalizeDay(u);if(!r||r.kind!=='free'||u.rewards.includes(id)||u.rewards.filter(x=>x.startsWith('free')).length>=3)return toast('Daily free claim unavailable.');u.rewards.push(id);u.coins+=r.coins;record(u,'Credit',r.coins,r.name);render();toast('Demo coins added.')}
-function watchAd(id){let u=me(),r=rewardDefs.find(x=>x.id===id);normalizeDay(u);if(u.rewards.includes(id)||adTimers[id]!=null)return;let btn=[...document.querySelectorAll('.reward-card')].find(x=>x.textContent.includes(r.name))?.querySelector('button');let left=30;if(btn)btn.textContent='Demo ad: 30s';adTimers[id]=setInterval(()=>{left--;if(btn)btn.textContent='Demo ad: '+left+'s';if(left<=0){clearInterval(adTimers[id]);delete adTimers[id];u.rewards.push(id);u.coins+=r.coins;record(u,'Credit',r.coins,'Promotional demo reward');save();render();toast('Demo reward unlocked.')}},1000)}
-function renderMarket(){$('marketGrid').innerHTML=assets.map(a=>`<div class="card"><div class="asset"><div class="asset-icon">${a.icon}</div><div><b>${a.name}</b><div class="muted">${a.symbol} · Synthetic quote</div></div></div><div class="stat-value">${money(prices[a.symbol])}</div><span class="${prices[a.symbol]>=base[a.symbol]?'positive':'negative'}">${((prices[a.symbol]/base[a.symbol]-1)*100).toFixed(2)}% since start</span></div>`).join('');$('assetSelect').innerHTML=assets.map(a=>`<option value="${a.symbol}">${a.name} (${a.symbol})</option>`).join('')}
-function buyAsset(){let s=$('assetSelect').value,n=Number($('investAmount').value),u=me();if(!Number.isFinite(n)||n<=0||n>u.local+u.coins/RATE)return toast('Insufficient Local Coin demo balance.');let coins=Math.round(n*RATE);if(u.coins>=coins)u.coins-=coins;else{let short=coins-u.coins;u.coins=0;u.local-=short/RATE}u.holdings[s]=(u.holdings[s]||0)+n/prices[s];record(u,'Investment',n,'Bought virtual '+s);save();render();toast('Virtual units purchased.')}
-function renderHoldings(){let h=me().holdings||{},rows=Object.entries(h).filter(x=>x[1]>0);$('holdings').innerHTML=rows.length?`<div class="table-wrap"><table><tr><th>Asset</th><th>Units</th><th>Value</th><th></th></tr>${rows.map(([s,q])=>`<tr><td>${s}</td><td>${q.toFixed(6)}</td><td>${money(q*prices[s])}</td><td><button class="btn" onclick="sellAsset('${s}')">Sell</button></td></tr>`).join('')}</table></div>`:'<div class="muted">No virtual holdings yet.</div>'}
-function sellAsset(s){let u=me(),q=u.holdings[s]||0;if(!q)return;let v=q*prices[s];u.holdings[s]=0;u.local+=v;record(u,'Sale',v,'Sold virtual '+s);save();render();toast('Virtual asset sold.')}
-function renderBusinesses(){let list=db.businesses||[];$('businessList').innerHTML=list.length?list.map(b=>`<div style="padding:15px 0;border-bottom:1px solid var(--line)"><div class="card-head"><div><b>${safe(b.name)}</b><div class="muted">${safe(b.desc)} · by @${safe(db.users[b.owner]?.username||'unknown')}</div></div><b>${money(b.value)}</b></div><div class="muted">Total simulated investment: ${money(b.raised)} · ${b.shares.toFixed(2)} virtual units</div><button class="btn primary" onclick="investBusiness('${b.id}')">Invest virtual funds</button></div>`).join(''):'<div class="muted">No virtual businesses have been created yet.</div>'}
-function createBusiness(){let name=$('bizName').value.trim(),desc=$('bizDesc').value.trim(),amount=Number($('bizAmount').value),u=me();if(!name||!Number.isFinite(amount)||amount<10000)return toast('Business name and minimum ₹10,000 self-investment required.');let funds=u.local+u.coins/RATE;if(funds<amount)return toast('Insufficient simulated Local Coin balance.');debit(u,amount);let b={id:uid(),owner:current,name,desc,value:amount,raised:amount,shares:amount/10,created:Date.now()};db.businesses.push(b);u.businessIds.push(b.id);record(u,'Business investment',amount,'Created '+name);save();render();toast('Virtual business created.')}
-function debit(u,amount){let coins=Math.min(u.coins,Math.round(amount*RATE));u.coins-=coins;let remaining=amount-coins/RATE;if(remaining>0)u.local-=remaining}
-function investBusiness(id){let b=db.businesses.find(x=>x.id===id),u=me();if(!b||b.owner===current)return toast('Choose another user's business.');let amount=Number(prompt('Enter simulated Local Coin amount to invest (₹):','500'));if(!Number.isFinite(amount)||amount<=0)return;if(u.local+u.coins/RATE<amount)return toast('Insufficient demo balance.');debit(u,amount);b.raised+=amount;b.value+=amount;b.shares+=amount/10;record(u,'Business investment',amount,'Invested in '+b.name);record(db.users[b.owner],'Business funding',amount,'New funding for '+b.name);save();render();toast('Simulated investment recorded.')}
-function valuation(u){return u.local+u.coins/RATE+totalPortfolio(u)}
-function renderDirectory(){let q=($('directorySearch')?.value||'').toLowerCase(),list=Object.values(db.users).filter(u=>(u.name+' '+u.username).toLowerCase().includes(q)).sort((a,b)=>valuation(b)-valuation(a));$('directoryList').innerHTML=list.map((u,i)=>`<div class="row" style="padding:11px 0;border-bottom:1px solid var(--line);align-items:center"><img class="avatar" src="${u.avatar||''}"><div><b>${safe(u.name)}</b><div class="muted">@${safe(u.username)} · Rank #${i+1}</div></div><b style="text-align:right">${money(valuation(u))}</b><button class="btn" style="flex:0" onclick="showPublic('${u.email}')">View</button></div>`).join('')||'<div class="muted">No matching profiles.</div>'}
-function showPublic(email){let u=db.users[email];if(!u)return;$('publicProfile').innerHTML=`<div class="row"><img class="profile-pic" src="${u.avatar||''}"><div><h3>${safe(u.name)}</h3><div class="muted">@${safe(u.username)}</div></div></div><div class="grid three" style="margin-top:15px"><div><div class="stat-label">Valuation</div><b>${money(valuation(u))}</b></div><div><div class="stat-label">Coin balance</div><b>${u.coins.toLocaleString('en-IN')}</b></div><div><div class="stat-label">Businesses</div><b>${u.businessIds.length}</b></div></div><div class="muted" style="margin-top:12px">Portfolio details are limited to public demo statistics.</div>`}
-function renderTransactions(){let tx=me().transactions;$('transactionTable').innerHTML=tx.length?`<div class="table-wrap"><table><tr><th>Type</th><th>Description</th><th>Amount</th><th>Date</th></tr>${tx.map(t=>`<tr><td>${safe(t.type)}</td><td>${safe(t.desc)}</td><td>${money(t.amount)}</td><td>${safe(t.date)}</td></tr>`).join('')}</table></div>`:'<div class="muted">No transactions yet.</div>'}
-function updateConversion(){let n=Number($('convertInput').value)||0;$('convertResult').textContent=money(n/RATE)}
-function convertCoins(){let n=Math.floor(Number($('convertInput').value)),u=me();if(!Number.isSafeInteger(n)||n<1000||n>u.coins)return toast('Enter at least 1,000 coins and stay within your balance.');u.coins-=n;u.local+=n/RATE;record(u,'Conversion',n/RATE,n+' coins converted to Local Coin');save();render();toast('Simulated conversion complete.')}
-function transfer(){let target=$('recipient').value.trim().toLowerCase(),amount=Number($('transferAmount').value),u=me(),email=Object.keys(db.users).find(e=>e===target||db.users[e].username===target);if(!email||email===current)return toast('Enter another registered email or username.');if(!Number.isFinite(amount)||amount<=0||u.local+u.coins/RATE<amount)return toast('Invalid amount or insufficient demo balance.');debit(u,amount);db.users[email].local+=amount;record(u,'Transfer sent',amount,'Sent to @'+db.users[email].username);record(db.users[email],'Transfer received',amount,'Received from @'+u.username);save();render();toast('Simulated transfer recorded for both accounts.')}
-async function saveProfile(){let u=me(),name=$('editName').value.trim(),username=$('editUsername').value.trim().toLowerCase();if(!name||! /^[a-z0-9_]{3,18}$/.test(username))return toast('Enter a valid name and username.');if(Object.values(db.users).some(x=>x.email!==current&&x.username===username))return toast('Username is already taken.');u.name=name;u.username=username;if($('editPic').files[0])u.avatar=await imageData($('editPic').files[0]);let brand=$('brandInput').value.trim()||'VAULT';localStorage.setItem('vault_brand',brand);save();render();toast('Profile saved.')}
-function toggleTheme(){let t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('vault_theme',t)}
-function togglePreview(){if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()}
-function setDensity(){document.body.style.setProperty('--density',$('density').value);document.querySelectorAll('.card').forEach(c=>c.style.padding=$('density').value==='compact'?'13px':'19px')}
-async function exportProject(){try{if(!window.JSZip)return toast('ZIP library unavailable. Check internet and retry.');let zip=new JSZip();let source=document.documentElement.outerHTML;zip.file('index.html','<!DOCTYPE html>\\n'+source);zip.file('README.txt','Vault financial simulation prototype\\nOpen index.html in a modern browser.\\nAll data is local to this browser. This is not a real financial service.\\n');let logo=await fetch('assets/gold-coin.webp').then(r=>r.blob()).catch(()=>null);if(logo)zip.file('assets/gold-coin.webp',logo);let blob=await zip.generateAsync({type:'blob'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='vault-financial-simulation.zip';a.click();URL.revokeObjectURL(a.href);toast('Project ZIP generated.')}catch(e){toast('Export failed: '+e.message)}}
-function tick(){Object.keys(prices).forEach(s=>{let drift=(Math.random()-.495)*.0018;prices[s]=Math.max(1,prices[s]*(1+drift))});history.push(history.at(-1)+(Math.random()-.49)*1.25);if(history.length>50)history.shift();let pts=history.map((v,i)=>[i*600/(history.length-1),150-(v-Math.min(...history)+5)*7]);let d=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');$('chartLine').setAttribute('d',d);$('chartArea').setAttribute('d',d+' L600 190 L0 190 Z');if(current){renderMarket();$('homeInvest').textContent=money(totalPortfolio(me()));$('portfolioValue').textContent=money(valuation(me()));renderHoldings()}}
-let savedTheme=localStorage.getItem('vault_theme')||'light';document.documentElement.setAttribute('data-theme',savedTheme);
-if(current&&db.users[current]){start(current)}else{current=null;localStorage.removeItem(SESSION)}
-tick();marketTimer=setInterval(tick,3500);
-window.addEventListener('storage',e=>{if(e.key===DB){db=JSON.parse(e.newValue||'{"users":{},"businesses":[]}');if(current)render()}});
-</script></body></html>
+lucide.createIcons();
+
+const input = document.getElementById("websiteUrl");
+const button = document.getElementById("testBtn");
+const errorBox = document.getElementById("error");
+
+let historyData = [];
+
+try {
+  historyData = JSON.parse(
+    localStorage.getItem("speedcheck-history") || "[]"
+  );
+  if (!Array.isArray(historyData)) historyData = [];
+} catch {
+  historyData = [];
+}
+
+renderHistory();
+
+input.addEventListener("keydown", e => {
+  if (e.key === "Enter") startTest();
+});
+
+function normalizeUrl(value) {
+  let url = value.trim();
+
+  if (!url) throw new Error("Please enter a website URL.");
+
+  if (!/^https?:\/\//i.test(url)) {
+    url = "https://" + url;
+  }
+
+  let parsed;
+
+  try {
+    parsed = new URL(url);
+  } catch {
+    throw new Error("Please enter a valid website URL.");
+  }
+
+  if (!["http:", "https:"].includes(parsed.protocol)) {
+    throw new Error("Only HTTP and HTTPS websites are supported.");
+  }
+
+  if (!parsed.hostname.includes(".")) {
+    throw new Error("Please enter a complete domain name.");
+  }
+
+  return parsed.href;
+}
+
+async function startTest() {
+  errorBox.style.display = "none";
+
+  let url;
+
+  try {
+    url = normalizeUrl(input.value);
+  } catch (error) {
+    showError(error.message);
+    return;
+  }
+
+  button.disabled = true;
+  button.innerHTML = '<div class="loader"></div> Testing...';
+
+  document.getElementById("results").style.display = "block";
+  document.getElementById("testedUrl").textContent =
+    new URL(url).hostname;
+
+  document.getElementById("score").textContent = "...";
+  document.getElementById("grade").textContent =
+    "Testing connection...";
+  document.getElementById("responseTime").textContent = "--";
+  document.getElementById("pageSize").textContent = "--";
+  document.getElementById("httpStatus").textContent = "--";
+  document.getElementById("connection").textContent = "Testing";
+
+  document.getElementById("gaugeProgress").style.strokeDashoffset = 330;
+
+  document.getElementById("recommendations").innerHTML =
+    '<div class="recommendation"><div class="rec-icon"><div class="loader" style="border-color:#c9c6ff;border-top-color:#635bff"></div></div><div class="rec-text"><strong>Analyzing website</strong><p>Waiting for the browser connection test...</p></div></div>';
+
+  const result = await measureWebsite(url);
+
+  displayResults(result);
+  saveHistory(result);
+
+  button.disabled = false;
+  button.innerHTML = '<i data-lucide="zap" size="16"></i> Check Again';
+  lucide.createIcons();
+}
+
+async function measureWebsite(url) {
+  const start = performance.now();
+
+  let result = {
+    url,
+    time: 0,
+    status: "Not exposed",
+    size: "Unavailable",
+    connection: "Unknown",
+    cors: false,
+    success: false
+  };
+
+  // First attempt: normal CORS request.
+  // Some websites allow cross-origin requests.
+
+  try {
+    const controller = new AbortController();
+
+    const timeout = setTimeout(
+      () => controller.abort(),
+      15000
+    );
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        mode: "cors",
+        cache: "no-store",
+        redirect: "follow",
+        signal: controller.signal
+      });
+
+      result.time = performance.now() - start;
+      result.status = response.status;
+      result.connection = response.ok ? "Online" : "Responding";
+      result.success = true;
+      result.cors = true;
+
+      const length = response.headers.get("content-length");
+
+      if (length) {
+        result.size = formatBytes(Number(length));
+      } else {
+        result.size = "Not provided";
+      }
+
+      response.body?.cancel().catch(() => {});
+    } finally {
+      clearTimeout(timeout);
+    }
+
+  } catch (error) {
+
+    // Second attempt: opaque no-cors request.
+    // It can confirm reachability but hides HTTP details.
+
+    const fallbackStart = performance.now();
+
+    try {
+      const controller = new AbortController();
+
+      const timeout = setTimeout(
+        () => controller.abort(),
+        15000
+      );
+
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          mode: "no-cors",
+          cache: "no-store",
+          signal: controller.signal
+        });
+
+        result.time = performance.now() - fallbackStart;
+        result.status = "Hidden by browser";
+        result.connection = "Reachable";
+        result.success = true;
+        result.size = "Hidden by browser";
+
+        response.body?.cancel().catch(() => {});
+      } finally {
+        clearTimeout(timeout);
+      }
+
+    } catch (fallbackError) {
+      result.time = performance.now() - fallbackStart;
+      result.connection =
+        fallbackError.name === "AbortError"
+          ? "Timed out"
+          : "Unavailable";
+
+      result.status = "Unavailable";
+      result.success = false;
+    }
+  }
+
+  return result;
+}
+
+function formatBytes(bytes) {
+  if (!Number.isFinite(bytes) || bytes < 0) return "Unavailable";
+  if (bytes === 0) return "0 B";
+
+  const units = ["B", "KB", "MB", "GB"];
+  const index = Math.min(
+    Math.floor(Math.log(bytes) / Math.log(1024)),
+    units.length - 1
+  );
+
+  return (bytes / Math.pow(1024, index)).toFixed(2)
+    + " " + units[index];
+}
+
+function calculateScore(ms) {
+  if (ms <= 100) return 100;
+  if (ms <= 200) return 95;
+  if (ms <= 400) return 85;
+  if (ms <= 600) return 75;
+  if (ms <= 900) return 65;
+  if (ms <= 1200) return 55;
+  if (ms <= 2000) return 40;
+  if (ms <= 3500) return 25;
+  return 10;
+}
+
+function displayResults(result) {
+  const score = result.success
+    ? calculateScore(result.time)
+    : 0;
+
+  document.getElementById("responseTime").textContent =
+    result.success
+      ? Math.round(result.time) + " ms"
+      : "--";
+
+  document.getElementById("pageSize").textContent = result.size;
+  document.getElementById("httpStatus").textContent =
+    result.status;
+
+  document.getElementById("connection").textContent =
+    result.connection;
+
+  document.getElementById("score").textContent = score;
+
+  const gauge = document.getElementById("gaugeProgress");
+  const grade = document.getElementById("grade");
+
+  gauge.style.stroke = !result.success
+    ? "#ef5350"
+    : score >= 75
+      ? "#16b879"
+      : score >= 45
+        ? "#f3a735"
+        : "#ef5350";
+
+  gauge.style.strokeDashoffset =
+    330 - (330 * score / 100);
+
+  if (!result.success) {
+    grade.textContent = "Connection could not be confirmed";
+    grade.style.color = "#ef5350";
+  } else if (score >= 75) {
+    grade.textContent = "Fast response";
+    grade.style.color = "#16b879";
+  } else if (score >= 45) {
+    grade.textContent = "Average response";
+    grade.style.color = "#e49a23";
+  } else {
+    grade.textContent = "Slow response";
+    grade.style.color = "#ef5350";
+  }
+
+  showRecommendations(result);
+}
+
+function showRecommendations(result) {
+  const container = document.getElementById("recommendations");
+
+  let items = [];
+
+  if (!result.success) {
+    items.push([
+      "alert-circle",
+      "Connection could not be confirmed",
+      "Check the URL, DNS settings, website availability and browser network access."
+    ]);
+  } else if (result.time <= 400) {
+    items.push([
+      "check-circle",
+      "Good connection response",
+      "The browser received a response quickly during this test."
+    ]);
+  } else {
+    items.push([
+      "zap",
+      "Improve server response",
+      "Check server performance, hosting resources, caching and backend processing."
+    ]);
+  }
+
+  items.push([
+    "image",
+    "Optimize images",
+    "Use modern WebP or AVIF formats and compress large images."
+  ]);
+
+  items.push([
+    "code",
+    "Optimize website code",
+    "Minify CSS and JavaScript and remove unnecessary scripts."
+  ]);
+
+  items.push([
+    "database",
+    "Enable caching",
+    "Configure browser caching, CDN delivery and server-side caching."
+  ]);
+
+  container.innerHTML = items.map(item => `
+    <div class="recommendation">
+      <div class="rec-icon">
+        <i data-lucide="${item[0]}" size="16"></i>
+      </div>
+      <div class="rec-text">
+        <strong>${escapeHTML(item[1])}</strong>
+        <p>${escapeHTML(item[2])}</p>
+      </div>
+    </div>
+  `).join("");
+
+  lucide.createIcons();
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+
+function showError(message) {
+  errorBox.textContent = message;
+  errorBox.style.display = "block";
+}
+
+function saveHistory(result) {
+  historyData.unshift({
+    url: result.url,
+    time: result.time,
+    success: result.success,
+    date: new Date().toLocaleString()
+  });
+
+  historyData = historyData.slice(0, 10);
+
+  try {
+    localStorage.setItem(
+      "speedcheck-history",
+      JSON.stringify(historyData)
+    );
+  } catch {}
+
+  renderHistory();
+}
+
+function renderHistory() {
+  const list = document.getElementById("historyList");
+
+  if (!historyData.length) {
+    list.innerHTML =
+      '<div class="empty">No tests performed yet.</div>';
+    return;
+  }
+
+  list.innerHTML = historyData.map(item => `
+    <div class="history-item">
+      <div class="history-url" title="${escapeHTML(item.url)}">
+        ${escapeHTML(item.url)}
+      </div>
+      <div>${item.success ? Math.round(item.time) + " ms" : "Failed"}</div>
+      <div class="history-score">
+        ${item.success ? calculateScore(item.time) + "/100" : "--"}
+      </div>
+      <div style="color:#a0a8b7;font-size:10px">
+        ${escapeHTML(item.date)}
+      </div>
+    </div>
+  `).join("");
+}
+
+function clearHistory() {
+  historyData = [];
+
+  try {
+    localStorage.removeItem("speedcheck-history");
+  } catch {}
+
+  renderHistory();
+}
+</script>
+
+</body>
+</html>
